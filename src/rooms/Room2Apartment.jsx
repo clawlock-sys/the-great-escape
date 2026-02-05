@@ -4,16 +4,41 @@ import { Transition } from '../components/Transition';
 import { useAudio } from '../hooks/useAudio';
 import styles from '../styles/Room2.module.css';
 
+// Zone definitions for the apartment
+const ZONES = {
+  living: {
+    id: 'living',
+    name: 'Living Room',
+    background: '/assets/room2/zone-living.png',
+    // Clickable area on overview
+    overviewPosition: { top: '20%', left: '5%', width: '35%', height: '75%' },
+  },
+  kitchen: {
+    id: 'kitchen',
+    name: 'Kitchen',
+    background: '/assets/room2/zone-kitchen.png',
+    overviewPosition: { top: '20%', left: '35%', width: '30%', height: '75%' },
+  },
+  bedroom: {
+    id: 'bedroom',
+    name: 'Bedroom',
+    background: '/assets/room2/zone-bedroom.png',
+    overviewPosition: { top: '20%', left: '60%', width: '38%', height: '75%' },
+  },
+};
+
 // Nash photo locations with letters - spells ILLANDO
+// Positions are now relative to their ZONE backgrounds
 const NASH_PHOTOS = [
   {
     id: 1,
-    location: 'couch',
+    location: 'couch cushion',
     zone: 'living',
     letter: 'I',
     hint: 'Behind the couch cushion',
     image: '/assets/room2/nash1.jpeg',
-    position: { top: '50%', left: '38%', width: '10%', height: '12%' },
+    // Position within zoomed living room view
+    position: { top: '55%', left: '60%', width: '8%', height: '10%' },
   },
   {
     id: 2,
@@ -22,7 +47,7 @@ const NASH_PHOTOS = [
     letter: 'L',
     hint: 'Inside the fridge',
     image: '/assets/room2/nash2.JPEG',
-    position: { top: '28%', left: '44%', width: '8%', height: '18%' },
+    position: { top: '30%', left: '20%', width: '7%', height: '12%' },
   },
   {
     id: 3,
@@ -31,43 +56,43 @@ const NASH_PHOTOS = [
     letter: 'L',
     hint: 'Hanging on the bedroom wall',
     image: '/assets/room2/nash3.png',
-    position: { top: '38%', left: '74%', width: '10%', height: '12%' },
+    position: { top: '25%', left: '15%', width: '8%', height: '10%' },
   },
   {
     id: 4,
-    location: 'book',
+    location: 'bookshelf',
     zone: 'living',
     letter: 'A',
     hint: 'Inside a book on the shelf',
     image: '/assets/room2/nash4.jpeg',
-    position: { top: '65%', left: '24%', width: '6%', height: '8%' },
+    position: { top: '35%', left: '25%', width: '6%', height: '8%' },
   },
   {
     id: 5,
-    location: 'table',
+    location: 'under table',
     zone: 'kitchen',
     letter: 'N',
     hint: 'Taped under the table',
     image: '/assets/room2/nash5.jpeg',
-    position: { top: '68%', left: '45%', width: '12%', height: '10%' },
+    position: { top: '75%', left: '55%', width: '8%', height: '8%' },
   },
   {
     id: 6,
-    location: 'dresser',
+    location: 'dresser drawer',
     zone: 'bedroom',
     letter: 'D',
     hint: 'In the dresser drawer',
     image: '/assets/room2/nash6.jpeg',
-    position: { top: '42%', left: '58%', width: '8%', height: '12%' },
+    position: { top: '60%', left: '70%', width: '7%', height: '10%' },
   },
   {
     id: 7,
-    location: 'cabinets',
+    location: 'kitchen cabinet',
     zone: 'kitchen',
     letter: 'O',
     hint: 'In the kitchen cabinets',
     image: '/assets/room2/nash7.jpeg',
-    position: { top: '20%', left: '55%', width: '10%', height: '10%' },
+    position: { top: '20%', left: '65%', width: '8%', height: '10%' },
   },
   {
     id: 8,
@@ -75,51 +100,65 @@ const NASH_PHOTOS = [
     zone: 'bedroom',
     letter: '?',
     hint: 'In the mirror reflection',
-    image: '/assets/room2/nash3.png', // Reuse image for mirror
-    position: { top: '38%', left: '71%', width: '8%', height: '12%' },
-    requiresAllOthers: true, // Only visible after finding 7 real photos
+    image: '/assets/room2/nash3.png',
+    position: { top: '40%', left: '45%', width: '8%', height: '12%' },
+    requiresAllOthers: true,
   },
 ];
 
-// Red herring fake Nashes
-const FAKE_NASHES = [
-  {
-    id: 'fake1',
-    image: '/assets/room2/decoy1.jpeg',
-    position: { top: '58%', left: '22%', width: '10%', height: '10%' }, // TV area
-  },
-  {
-    id: 'fake2',
-    image: '/assets/room2/decoy2.png',
-    position: { top: '42%', left: '52%', width: '8%', height: '8%' }, // Table by fridge
-  },
-];
+// Interactive objects per zone (red herrings with flavor text)
+const INTERACTIVE_OBJECTS = {
+  living: [
+    { id: 'tv', name: 'TV', position: { top: '30%', left: '45%', width: '15%', height: '20%' }, text: 'The TV is off. Your reflection stares back, distorted.' },
+    { id: 'plant', name: 'Plant', position: { top: '20%', left: '80%', width: '10%', height: '25%' }, text: 'A healthy monstera. No secrets hidden in its leaves.' },
+    { id: 'rug', name: 'Rug', position: { top: '70%', left: '40%', width: '25%', height: '15%' }, text: 'You lift the rug. Just dust bunnies.' },
+    { id: 'lamp', name: 'Lamp', position: { top: '25%', left: '10%', width: '8%', height: '20%' }, text: 'The lamp flickers. For a moment, you see a shadow...' },
+    { id: 'window-living', name: 'Window', position: { top: '15%', left: '55%', width: '20%', height: '30%' }, text: 'San Diego sunshine streams in. Nothing unusual outside.' },
+  ],
+  kitchen: [
+    { id: 'sink', name: 'Sink', position: { top: '40%', left: '40%', width: '12%', height: '15%' }, text: 'Dishes from last night. A coffee mug reads "World\'s Best..."' },
+    { id: 'stove', name: 'Stove', position: { top: '35%', left: '75%', width: '15%', height: '20%' }, text: 'The stovetop is cold. Someone was cooking pasta recently.' },
+    { id: 'fruit-bowl', name: 'Fruit Bowl', position: { top: '65%', left: '30%', width: '10%', height: '10%' }, text: 'Bananas going brown. Nothing hidden underneath.' },
+    { id: 'calendar', name: 'Calendar', position: { top: '20%', left: '10%', width: '8%', height: '12%' }, text: 'February 2025. A date is circled in red: the 14th.' },
+    { id: 'toaster', name: 'Toaster', position: { top: '45%', left: '55%', width: '8%', height: '8%' }, text: 'A normal toaster. Why did you check this?' },
+  ],
+  bedroom: [
+    { id: 'pillow', name: 'Pillow', position: { top: '55%', left: '25%', width: '15%', height: '12%' }, text: 'You fluff the pillow. Something red catches your eye... just a thread.' },
+    { id: 'closet', name: 'Closet', position: { top: '30%', left: '85%', width: '12%', height: '40%' }, text: 'Clothes hanging neatly. A familiar hoodie you\'ve borrowed.' },
+    { id: 'nightstand', name: 'Nightstand', position: { top: '50%', left: '10%', width: '10%', height: '15%' }, text: 'A book, a glass of water, and a charging phone. Nothing unusual.' },
+    { id: 'biggie-bed', name: 'Something Red', position: { top: '48%', left: '40%', width: '10%', height: '12%' }, text: '"Not yet." The red bunny seems to whisper.', isBiggie: true },
+    { id: 'window-bedroom', name: 'Window', position: { top: '15%', left: '55%', width: '18%', height: '25%' }, text: 'The window lock catches your attention...' , triggersWindowPuzzle: true },
+  ],
+};
 
-// Biggie on the bed
-const BIGGIE_POSITION = { top: '52%', left: '72%', width: '8%', height: '10%' };
+// Fake Nashes per zone
+const FAKE_NASHES = {
+  living: [
+    { id: 'fake-living-1', position: { top: '65%', left: '15%', width: '8%', height: '10%' }, image: '/assets/room2/decoy1.jpeg' },
+  ],
+  kitchen: [
+    { id: 'fake-kitchen-1', position: { top: '55%', left: '15%', width: '7%', height: '9%' }, image: '/assets/room2/decoy2.png' },
+  ],
+  bedroom: [
+    { id: 'fake-bedroom-1', position: { top: '70%', left: '55%', width: '8%', height: '10%' }, image: '/assets/room2/decoy1.jpeg' },
+  ],
+};
 
 // Window lock puzzle
-const WINDOW_POSITION = { top: '32%', left: '16%', width: '14%', height: '25%' };
 const TARGET_WORD = ['I', 'L', 'L', 'A', 'N', 'D', 'O'];
 
-// Generate dial options: correct letter + 4 random
 const generateDialOptions = (correctLetter) => {
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const others = alphabet.split('').filter((l) => l !== correctLetter);
   const shuffled = others.sort(() => Math.random() - 0.5).slice(0, 4);
-  const options = [correctLetter, ...shuffled].sort(() => Math.random() - 0.5);
-  return options;
+  return [correctLetter, ...shuffled].sort(() => Math.random() - 0.5);
 };
 
-// Pre-generate dial options (static per session)
 const DIAL_OPTIONS = TARGET_WORD.map(generateDialOptions);
 
-// Generate random initial dial positions (not showing the answer)
 const generateInitialDialValues = () => {
   return TARGET_WORD.map((_, idx) => {
-    // Find the correct answer position
     const correctPos = DIAL_OPTIONS[idx].indexOf(TARGET_WORD[idx]);
-    // Pick a random position that's NOT the correct one
     let pos;
     do {
       pos = Math.floor(Math.random() * 5);
@@ -134,7 +173,6 @@ const HINTS = [
   'I-L-L-A-N-D-O. The place where the night was perfect.',
 ];
 
-// Variants of the "nashed" message
 const NASHED_MESSAGES = [
   "YOU JUST GOT NASHED!",
   "NASHED AGAIN!",
@@ -146,16 +184,17 @@ const NASHED_MESSAGES = [
 ];
 
 export function Room2Apartment({ onComplete, onHintUsed }) {
-  const [showWrongAnswer, setShowWrongAnswer] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const [activeZone, setActiveZone] = useState(null); // null = overview, 'living'|'kitchen'|'bedroom' = zoomed
   const [foundNashes, setFoundNashes] = useState(new Set());
   const [showModal, setShowModal] = useState(null);
+  const [isVisible, setIsVisible] = useState(false);
   const [debugMode, setDebugMode] = useState(false);
 
   // Window lock puzzle state
   const [showWindowZoom, setShowWindowZoom] = useState(false);
   const [showDialPuzzle, setShowDialPuzzle] = useState(false);
-  const [dialValues, setDialValues] = useState(() => generateInitialDialValues()); // Random start, not the answer
+  const [dialValues, setDialValues] = useState(() => generateInitialDialValues());
+  const [showWrongAnswer, setShowWrongAnswer] = useState(false);
 
   // Audio
   const ambient = useAudio('/audio/ambient-lofi.mp3', { loop: true, volume: 0.3 });
@@ -166,27 +205,30 @@ export function Room2Apartment({ onComplete, onHintUsed }) {
     return () => ambient.stop();
   }, []);
 
-  // Count real (non-decoy) photos found
+  // Count real photos found (excluding mirror)
   const realPhotosFound = [...foundNashes].filter((id) => {
     const photo = NASH_PHOTOS.find((p) => p.id === id);
-    return photo && !photo.isDecoy && !photo.requiresAllOthers;
+    return photo && !photo.requiresAllOthers;
   }).length;
 
-  // Mirror Nash only appears after 7 real photos found
   const mirrorUnlocked = realPhotosFound >= 7;
 
   const handleHintUsed = useCallback((roomId, level) => {
     onHintUsed?.(roomId, level);
   }, [onHintUsed]);
 
+  const handleZoneClick = (zoneId) => {
+    setActiveZone(zoneId);
+  };
+
+  const handleBackToOverview = () => {
+    setActiveZone(null);
+  };
+
   const handleNashClick = (nash) => {
-    // Check if mirror and not unlocked
-    if (nash.requiresAllOthers && !mirrorUnlocked) {
-      return; // Can't click yet
-    }
+    if (nash.requiresAllOthers && !mirrorUnlocked) return;
 
     setFoundNashes((prev) => new Set([...prev, nash.id]));
-
     setShowModal({
       type: 'nash',
       nash,
@@ -196,30 +238,18 @@ export function Room2Apartment({ onComplete, onHintUsed }) {
   };
 
   const handleFakeNashClick = (fake) => {
-    setShowModal({
-      type: 'fake',
-      id: fake.id,
-    });
+    setShowModal({ type: 'fake', id: fake.id, image: fake.image });
   };
 
-  const handleBiggieClick = () => {
-    setShowModal({
-      type: 'biggie',
-    });
+  const handleObjectClick = (obj) => {
+    if (obj.triggersWindowPuzzle) {
+      setShowWindowZoom(true);
+    } else {
+      setShowModal({ type: 'object', text: obj.text, isBiggie: obj.isBiggie });
+    }
   };
 
-  const closeModal = () => {
-    setShowModal(null);
-  };
-
-  // Window lock puzzle handlers
-  const handleWindowClick = () => {
-    setShowWindowZoom(true);
-  };
-
-  const handleLockClick = () => {
-    setShowDialPuzzle(true);
-  };
+  const closeModal = () => setShowModal(null);
 
   const handleDialRotate = (dialIndex, direction) => {
     setDialValues((prev) => {
@@ -233,11 +263,7 @@ export function Room2Apartment({ onComplete, onHintUsed }) {
     return dialValues.every((val, idx) => DIAL_OPTIONS[idx][val] === TARGET_WORD[idx]);
   };
 
-  const toggleDebug = () => {
-    setDebugMode((prev) => !prev);
-  };
-
-  // The target word with Nash ID positions: I(1) L(2) L(3) A(4) N(5) D(6) O(7)
+  // Letter display for progress
   const targetWord = [
     { letter: 'I', nashId: 1 },
     { letter: 'L', nashId: 2 },
@@ -248,104 +274,142 @@ export function Room2Apartment({ onComplete, onHintUsed }) {
     { letter: 'O', nashId: 7 },
   ];
 
+  // Get Nash photos for current zone
+  const currentZoneNashes = activeZone
+    ? NASH_PHOTOS.filter((n) => n.zone === activeZone)
+    : [];
+
+  // Get interactive objects for current zone
+  const currentZoneObjects = activeZone ? INTERACTIVE_OBJECTS[activeZone] || [] : [];
+
+  // Get fake Nashes for current zone
+  const currentZoneFakes = activeZone ? FAKE_NASHES[activeZone] || [] : [];
+
   return (
     <Transition isVisible={isVisible}>
-      <div className={styles.room2}>
-        {/* Zone labels for context */}
-        <div className={styles.zoneLabel} style={{ top: '10%', left: '5%' }}>
-          Living Room
-        </div>
-        <div className={styles.zoneLabel} style={{ top: '10%', left: '50%' }}>
-          Kitchen
-        </div>
-        <div className={styles.zoneLabel} style={{ top: '10%', left: '85%' }}>
-          Bedroom
-        </div>
-
-        {/* Nash photo hotspots */}
-        {NASH_PHOTOS.map((nash) => {
-          const isFound = foundNashes.has(nash.id);
-          const isVisible = !nash.requiresAllOthers || mirrorUnlocked;
-
-          if (!isVisible) return null;
-
-          return (
-            <div
-              key={nash.id}
-              className={`${styles.hotspot} ${styles.nashHotspot} ${
-                isFound ? styles.nashFound : ''
-              } ${debugMode ? styles.hotspotDebug : ''}`}
-              style={{
-                top: nash.position.top,
-                left: nash.position.left,
-                width: nash.position.width,
-                height: nash.position.height,
-              }}
-              onClick={() => handleNashClick(nash)}
-              title={debugMode ? `Nash ${nash.id}: ${nash.location}` : ''}
-            >
-              {debugMode && <span className={styles.hotspotLabel}>N{nash.id}</span>}
-              {isFound && <span className={styles.foundMarker}>✓</span>}
+      <div
+        className={styles.room2}
+        style={activeZone ? {
+          backgroundImage: `url('${import.meta.env.BASE_URL}${ZONES[activeZone].background.slice(1)}')`
+        } : undefined}
+      >
+        {/* Overview Mode: Zone Selection */}
+        {!activeZone && (
+          <>
+            <div className={styles.overviewTitle}>
+              <h2>The Apartment</h2>
+              <p>Click a room to explore</p>
             </div>
-          );
-        })}
 
-        {/* Fake Nash hotspots */}
-        {FAKE_NASHES.map((fake) => (
-          <div
-            key={fake.id}
-            className={`${styles.hotspot} ${styles.fakeHotspot} ${
-              debugMode ? styles.hotspotDebug : ''
-            }`}
-            style={{
-              top: fake.position.top,
-              left: fake.position.left,
-              width: fake.position.width,
-              height: fake.position.height,
-            }}
-            onClick={() => handleFakeNashClick(fake)}
-            title={debugMode ? `Fake: ${fake.id}` : ''}
-          >
-            {debugMode && <span className={styles.hotspotLabel}>F</span>}
-          </div>
-        ))}
+            {Object.values(ZONES).map((zone) => {
+              const nashesInZone = NASH_PHOTOS.filter((n) => n.zone === zone.id && !n.requiresAllOthers);
+              const foundInZone = nashesInZone.filter((n) => foundNashes.has(n.id)).length;
 
-        {/* Biggie on bed */}
-        <div
-          className={`${styles.hotspot} ${styles.biggieHotspot} ${
-            debugMode ? styles.hotspotDebug : ''
-          }`}
-          style={{
-            top: BIGGIE_POSITION.top,
-            left: BIGGIE_POSITION.left,
-            width: BIGGIE_POSITION.width,
-            height: BIGGIE_POSITION.height,
-          }}
-          onClick={handleBiggieClick}
-          title={debugMode ? 'Biggie' : ''}
-        >
-          {debugMode && <span className={styles.hotspotLabel}>B</span>}
-        </div>
+              return (
+                <div
+                  key={zone.id}
+                  className={`${styles.zoneSelector} ${debugMode ? styles.hotspotDebug : ''}`}
+                  style={{
+                    top: zone.overviewPosition.top,
+                    left: zone.overviewPosition.left,
+                    width: zone.overviewPosition.width,
+                    height: zone.overviewPosition.height,
+                  }}
+                  onClick={() => handleZoneClick(zone.id)}
+                >
+                  <div className={styles.zoneSelectorLabel}>
+                    <span className={styles.zoneName}>{zone.name}</span>
+                    <span className={styles.zoneProgress}>
+                      {foundInZone}/{nashesInZone.length} found
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </>
+        )}
 
-        {/* Window hotspot */}
-        <div
-          className={`${styles.hotspot} ${styles.windowHotspot} ${
-            debugMode ? styles.hotspotDebug : ''
-          }`}
-          style={{
-            top: WINDOW_POSITION.top,
-            left: WINDOW_POSITION.left,
-            width: WINDOW_POSITION.width,
-            height: WINDOW_POSITION.height,
-          }}
-          onClick={handleWindowClick}
-          title={debugMode ? 'Window' : ''}
-        >
-          {debugMode && <span className={styles.hotspotLabel}>W</span>}
-        </div>
+        {/* Zoomed Zone Mode */}
+        {activeZone && (
+          <>
+            {/* Back button */}
+            <button className={styles.backButton} onClick={handleBackToOverview}>
+              ← Back to Overview
+            </button>
+
+            {/* Zone title */}
+            <div className={styles.zoneTitle}>
+              {ZONES[activeZone].name}
+            </div>
+
+            {/* Interactive objects (red herrings) */}
+            {currentZoneObjects.map((obj) => (
+              <div
+                key={obj.id}
+                className={`${styles.hotspot} ${styles.objectHotspot} ${debugMode ? styles.hotspotDebug : ''}`}
+                style={{
+                  top: obj.position.top,
+                  left: obj.position.left,
+                  width: obj.position.width,
+                  height: obj.position.height,
+                }}
+                onClick={() => handleObjectClick(obj)}
+                title={debugMode ? obj.name : ''}
+              >
+                {debugMode && <span className={styles.hotspotLabel}>{obj.name.charAt(0)}</span>}
+              </div>
+            ))}
+
+            {/* Fake Nashes */}
+            {currentZoneFakes.map((fake) => (
+              <div
+                key={fake.id}
+                className={`${styles.hotspot} ${styles.fakeHotspot} ${debugMode ? styles.hotspotDebug : ''}`}
+                style={{
+                  top: fake.position.top,
+                  left: fake.position.left,
+                  width: fake.position.width,
+                  height: fake.position.height,
+                }}
+                onClick={() => handleFakeNashClick(fake)}
+                title={debugMode ? 'Fake' : ''}
+              >
+                {debugMode && <span className={styles.hotspotLabel}>F</span>}
+              </div>
+            ))}
+
+            {/* Nash photos in this zone */}
+            {currentZoneNashes.map((nash) => {
+              const isFound = foundNashes.has(nash.id);
+              const isVisible = !nash.requiresAllOthers || mirrorUnlocked;
+
+              if (!isVisible) return null;
+
+              return (
+                <div
+                  key={nash.id}
+                  className={`${styles.hotspot} ${styles.nashHotspot} ${
+                    isFound ? styles.nashFound : ''
+                  } ${debugMode ? styles.hotspotDebug : ''}`}
+                  style={{
+                    top: nash.position.top,
+                    left: nash.position.left,
+                    width: nash.position.width,
+                    height: nash.position.height,
+                  }}
+                  onClick={() => handleNashClick(nash)}
+                  title={debugMode ? `Nash ${nash.id}` : ''}
+                >
+                  {debugMode && <span className={styles.hotspotLabel}>N{nash.id}</span>}
+                  {isFound && <span className={styles.foundMarker}>✓</span>}
+                </div>
+              );
+            })}
+          </>
+        )}
 
         {/* Debug toggle */}
-        <button className={styles.debugToggle} onClick={toggleDebug}>
+        <button className={styles.debugToggle} onClick={() => setDebugMode((p) => !p)}>
           {debugMode ? 'Hide' : 'Debug'}
         </button>
 
@@ -377,8 +441,13 @@ export function Room2Apartment({ onComplete, onHintUsed }) {
         {/* Bottom panel */}
         <div className={styles.bottomPanel}>
           <p className={styles.prompt}>
-            "I'm everywhere but nowhere. Come find me."
+            {activeZone
+              ? `Searching ${ZONES[activeZone].name}...`
+              : '"I\'m everywhere but nowhere. Come find me."'}
           </p>
+          {!activeZone && (
+            <HintButton hints={HINTS} onHintUsed={handleHintUsed} roomId={2} />
+          )}
         </div>
 
         {/* Window zoom modal */}
@@ -402,7 +471,7 @@ export function Room2Apartment({ onComplete, onHintUsed }) {
                 src={`${import.meta.env.BASE_URL}assets/room2/Lock.png`}
                 alt="Window Lock"
                 className={styles.lockImage}
-                onClick={handleLockClick}
+                onClick={() => setShowDialPuzzle(true)}
               />
 
               {showDialPuzzle && (
@@ -432,9 +501,7 @@ export function Room2Apartment({ onComplete, onHintUsed }) {
                   <div className={styles.dialControls}>
                     <HintButton hints={HINTS} onHintUsed={handleHintUsed} roomId={2} />
                     {showWrongAnswer && (
-                      <p className={styles.dialWrongAnswer}>
-                        Wrong combination...
-                      </p>
+                      <p className={styles.dialWrongAnswer}>Wrong combination...</p>
                     )}
                   </div>
                 </div>
@@ -443,13 +510,11 @@ export function Room2Apartment({ onComplete, onHintUsed }) {
           </div>
         )}
 
-        {/* Modal */}
+        {/* Modal for Nash/Fake/Object */}
         {showModal && (
           <div className={styles.modalOverlay} onClick={closeModal}>
             <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-              <button className={styles.closeButton} onClick={closeModal}>
-                ×
-              </button>
+              <button className={styles.closeButton} onClick={closeModal}>×</button>
 
               {showModal.type === 'nash' && (
                 <div className={styles.nashModal}>
@@ -459,29 +524,15 @@ export function Room2Apartment({ onComplete, onHintUsed }) {
                       alt="Nash"
                     />
                   </div>
-
-                  {showModal.nash.isDecoy ? (
-                    <p className={styles.nashMessage}>
-                      *Nash waves cheerfully but holds nothing*
-                    </p>
-                  ) : showModal.nash.letter === '?' ? (
-                    <p className={styles.nashMessage}>
-                      *Nash holds up a sign with a single "?"*
-                    </p>
+                  {showModal.nash.letter === '?' ? (
+                    <p className={styles.nashMessage}>*Nash holds up a sign with a single "?"*</p>
                   ) : (
                     <>
-                      <p className={styles.nashMessage}>
-                        {showModal.nashedMessage}
-                      </p>
-                      <div className={styles.revealedLetter}>
-                        {showModal.nash.letter}
-                      </div>
+                      <p className={styles.nashMessage}>{showModal.nashedMessage}</p>
+                      <div className={styles.revealedLetter}>{showModal.nash.letter}</div>
                     </>
                   )}
-
-                  <p className={styles.locationHint}>
-                    Found: {showModal.nash.hint}
-                  </p>
+                  <p className={styles.locationHint}>Found: {showModal.nash.hint}</p>
                 </div>
               )}
 
@@ -489,7 +540,7 @@ export function Room2Apartment({ onComplete, onHintUsed }) {
                 <div className={styles.fakeModal}>
                   <div className={styles.fakePhoto}>
                     <img
-                      src={`${import.meta.env.BASE_URL}${FAKE_NASHES.find(f => f.id === showModal.id).image.slice(1)}`}
+                      src={`${import.meta.env.BASE_URL}${showModal.image.slice(1)}`}
                       alt="Not Nash"
                     />
                   </div>
@@ -497,15 +548,11 @@ export function Room2Apartment({ onComplete, onHintUsed }) {
                 </div>
               )}
 
-              {showModal.type === 'biggie' && (
-                <div className={styles.biggieModal}>
-                  <div className={styles.biggieImage}>
-                    <img
-                      src={`${import.meta.env.BASE_URL}assets/room2/biggie.jpeg`}
-                      alt="Biggie"
-                    />
-                  </div>
-                  <p className={styles.biggieMessage}>"Not yet."</p>
+              {showModal.type === 'object' && (
+                <div className={styles.objectModal}>
+                  <p className={showModal.isBiggie ? styles.biggieMessage : styles.objectText}>
+                    {showModal.text}
+                  </p>
                 </div>
               )}
             </div>

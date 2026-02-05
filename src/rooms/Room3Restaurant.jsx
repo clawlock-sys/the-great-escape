@@ -5,9 +5,9 @@ import { useAudio } from '../hooks/useAudio';
 import { validate } from '../utils/solutions';
 import styles from '../styles/Room3.module.css';
 
-// Letters for the puzzle: OCTOBER FIFTH + decoys (V, L, N)
-const SOLUTION_LETTERS = ['O', 'C', 'T', 'O', 'B', 'E', 'R', 'F', 'I', 'F', 'T', 'H'];
-const DECOY_LETTERS = ['V', 'L', 'N'];
+// Letters for the puzzle: FEBRUARY EIGHTH (their first date) + decoys (O, C, N)
+const SOLUTION_LETTERS = ['F', 'E', 'B', 'R', 'U', 'A', 'R', 'Y', 'E', 'I', 'G', 'H', 'T', 'H'];
+const DECOY_LETTERS = ['O', 'C', 'N'];
 const ALL_LETTERS = [...SOLUTION_LETTERS, ...DECOY_LETTERS];
 
 // Shuffle array helper
@@ -41,8 +41,8 @@ const HOTSPOTS = {
 
 const HINTS = [
   'The tiles remember a day. Not a place.',
-  'When did you first sit across from each other?',
-  'Unscramble: The month and the day you met.',
+  'When did you first sit across from each other here?',
+  'Unscramble: FEBRUARY EIGHTH — your first date.',
 ];
 
 export function Room3Restaurant({ onComplete, onHintUsed }) {
@@ -166,8 +166,8 @@ export function Room3Restaurant({ onComplete, onHintUsed }) {
   // Tiles on table (not in slots)
   const tableTiles = tiles.filter((t) => t.inSlot === null);
 
-  // Create array of 12 slots
-  const answerSlots = Array.from({ length: 12 }, (_, i) => {
+  // Create array of 14 slots (FEBRUARY EIGHTH = 14 letters)
+  const answerSlots = Array.from({ length: 14 }, (_, i) => {
     const tileInSlot = tiles.find((t) => t.inSlot === i);
     return { index: i, tile: tileInSlot };
   });
