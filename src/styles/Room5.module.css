@@ -1,13 +1,26 @@
 .room5 {
   position: relative;
   min-height: 100vh;
-  background: #0a0a0a;
+  background: #050505;
   font-family: var(--font-body);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  transition: filter 0.1s ease;
+}
+
+/* Screen flicker effect */
+.screenFlicker {
+  animation: screenFlicker 0.1s ease-in-out;
+}
+
+@keyframes screenFlicker {
+  0%, 100% { filter: brightness(1); }
+  25% { filter: brightness(0.3); }
+  50% { filter: brightness(1.2); }
+  75% { filter: brightness(0.5); }
 }
 
 /* Jump scare effect */
@@ -16,10 +29,24 @@
 }
 
 @keyframes jumpScare {
-  0% { transform: scale(1); }
-  15% { transform: scale(1.15); }
-  30% { transform: scale(1.1); }
-  100% { transform: scale(1); }
+  0% { transform: scale(1); filter: brightness(1); }
+  15% { transform: scale(1.2); filter: brightness(2) hue-rotate(-20deg); }
+  30% { transform: scale(1.15); filter: brightness(1.5); }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+
+/* Static noise overlay */
+.staticNoise {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: var(--static-opacity, 0.05);
+  pointer-events: none;
+  z-index: 50;
+  mix-blend-mode: overlay;
 }
 
 /* Moving shadows overlay */
@@ -30,40 +57,112 @@
   width: 100%;
   height: 100%;
   background:
-    radial-gradient(ellipse at 20% 30%, rgba(30, 0, 0, 0.3) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 70%, rgba(30, 0, 0, 0.3) 0%, transparent 50%);
-  animation: shadowMove 8s ease-in-out infinite;
+    radial-gradient(ellipse at 20% 30%, rgba(60, 0, 0, 0.4) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(60, 0, 0, 0.4) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 90%, rgba(40, 0, 0, 0.3) 0%, transparent 40%);
+  animation: shadowMove 10s ease-in-out infinite;
   pointer-events: none;
   z-index: 1;
 }
 
 @keyframes shadowMove {
   0%, 100% {
-    background-position: 0% 0%, 100% 100%;
-    opacity: 0.5;
+    background-position: 0% 0%, 100% 100%, 50% 100%;
+    opacity: 0.6;
   }
-  50% {
-    background-position: 10% 10%, 90% 90%;
-    opacity: 0.8;
+  33% {
+    background-position: 15% 15%, 85% 85%, 60% 90%;
+    opacity: 0.9;
+  }
+  66% {
+    background-position: -10% 5%, 110% 95%, 40% 95%;
+    opacity: 0.7;
   }
 }
 
-/* Spotlight effect */
+/* Dynamic spotlight following cursor */
+.dynamicSpotlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle 200px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(139, 0, 0, 0.15) 0%,
+    rgba(80, 0, 0, 0.08) 30%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 3;
+  transition: background 0.1s ease;
+}
+
+/* Static spotlight effect on Biggie */
 .spotlight {
   position: absolute;
-  top: 15%;
+  top: 10%;
   left: 50%;
   transform: translateX(-50%);
-  width: 300px;
-  height: 400px;
+  width: 350px;
+  height: 450px;
   background: radial-gradient(
     ellipse at 50% 0%,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0.05) 30%,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.03) 30%,
     transparent 70%
   );
   pointer-events: none;
   z-index: 2;
+  animation: spotlightPulse 4s ease-in-out infinite;
+}
+
+@keyframes spotlightPulse {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+/* Vignette */
+.vignette {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 30%,
+    rgba(0, 0, 0, 0.4) 70%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+  pointer-events: none;
+  z-index: 4;
+}
+
+/* Heartbeat pulse overlay */
+.heartbeatOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at center,
+    rgba(139, 0, 0, 0.1) 0%,
+    transparent 50%
+  );
+  pointer-events: none;
+  z-index: 5;
+  animation: heartbeat calc(1s / var(--heartbeat, 1)) ease-in-out infinite;
+  transform: scale(var(--breath-scale, 1));
+}
+
+@keyframes heartbeat {
+  0%, 100% { opacity: 0.3; }
+  15% { opacity: 0.8; }
+  30% { opacity: 0.4; }
+  45% { opacity: 0.7; }
+  60% { opacity: 0.3; }
 }
 
 /* Biggie container */
@@ -74,34 +173,36 @@
   align-items: center;
   z-index: 10;
   transition: all 1s ease;
+  transform: scale(var(--breath-scale, 1));
 }
 
 .biggieSuccess {
-  filter: brightness(1.3);
+  filter: brightness(1.5) drop-shadow(0 0 30px rgba(255, 200, 200, 0.5));
 }
 
 /* Pedestal */
 .pedestal {
-  width: 120px;
-  height: 40px;
+  width: 140px;
+  height: 50px;
   background: linear-gradient(
     to bottom,
-    #2a2a2a 0%,
-    #1a1a1a 50%,
-    #0a0a0a 100%
+    #1a1a1a 0%,
+    #0f0f0f 50%,
+    #050505 100%
   );
   border-radius: 8px 8px 0 0;
   box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.8),
-    inset 0 2px 4px rgba(255, 255, 255, 0.1);
+    0 10px 40px rgba(0, 0, 0, 0.9),
+    inset 0 2px 4px rgba(255, 255, 255, 0.05),
+    0 0 60px rgba(139, 0, 0, 0.2);
   margin-top: -10px;
 }
 
 /* Biggie */
 .biggie {
   position: relative;
-  width: 180px;
-  height: 200px;
+  width: 200px;
+  height: 220px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -110,13 +211,15 @@
 .biggieImage {
   max-width: 100%;
   max-height: 100%;
-  filter: drop-shadow(0 0 20px rgba(139, 0, 0, 0.5));
-  animation: biggieFloat 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 30px rgba(139, 0, 0, 0.6));
+  animation: biggieFloat 5s ease-in-out infinite;
 }
 
 @keyframes biggieFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-6px) rotate(0.5deg); }
+  50% { transform: translateY(-10px) rotate(0deg); }
+  75% { transform: translateY(-6px) rotate(-0.5deg); }
 }
 
 /* Biggie's eyes - clickable area */
@@ -125,8 +228,8 @@
   top: 25%;
   left: 50%;
   transform: translateX(-50%);
-  width: 80px;
-  height: 30px;
+  width: 90px;
+  height: 35px;
   cursor: pointer;
   z-index: 15;
 }
@@ -135,29 +238,33 @@
 .eyesGlowing::after {
   content: '';
   position: absolute;
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   background: radial-gradient(circle, #ff0000, #8b0000);
   border-radius: 50%;
-  box-shadow: 0 0 15px #ff0000, 0 0 30px #ff0000;
-  animation: eyeGlow 0.5s ease-in-out;
+  box-shadow:
+    0 0 20px #ff0000,
+    0 0 40px #ff0000,
+    0 0 60px rgba(255, 0, 0, 0.5);
+  animation: eyeGlow 0.3s ease-in-out;
 }
 
 .eyesGlowing::before {
-  left: 20%;
+  left: 18%;
   top: 50%;
   transform: translateY(-50%);
 }
 
 .eyesGlowing::after {
-  right: 20%;
+  right: 18%;
   top: 50%;
   transform: translateY(-50%);
 }
 
 @keyframes eyeGlow {
-  0%, 100% { opacity: 0; }
-  50% { opacity: 1; }
+  0% { opacity: 0; transform: translateY(-50%) scale(0.5); }
+  50% { opacity: 1; transform: translateY(-50%) scale(1.2); }
+  100% { opacity: 1; transform: translateY(-50%) scale(1); }
 }
 
 /* Biggie glow */
@@ -166,11 +273,11 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 250px;
-  height: 250px;
+  width: 300px;
+  height: 300px;
   background: radial-gradient(
     circle,
-    rgba(139, 0, 0, 0.2) 0%,
+    rgba(139, 0, 0, 0.25) 0%,
     rgba(139, 0, 0, 0.1) 40%,
     transparent 70%
   );
@@ -180,34 +287,52 @@
 
 @keyframes glowPulse {
   0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
-  50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+  50% { opacity: 0.9; transform: translate(-50%, -50%) scale(1.15); }
 }
 
 /* Speech container */
 .speechContainer {
   position: absolute;
-  top: 65%;
+  top: 62%;
   left: 50%;
   transform: translateX(-50%);
-  max-width: 600px;
+  max-width: 650px;
   text-align: center;
   z-index: 20;
 }
 
 .biggieText {
   font-family: var(--font-creepy);
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   color: #e8d8c8;
   text-shadow:
-    0 0 10px rgba(139, 0, 0, 0.5),
-    0 2px 4px rgba(0, 0, 0, 0.8);
-  line-height: 1.6;
+    0 0 15px rgba(139, 0, 0, 0.6),
+    0 0 30px rgba(139, 0, 0, 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.9);
+  line-height: 1.7;
   margin: 0.5rem 0;
+  letter-spacing: 0.5px;
+}
+
+/* Glitch text effect */
+.glitchText {
+  animation: glitchAnim 0.15s ease-in-out infinite;
+  position: relative;
+}
+
+@keyframes glitchAnim {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
 }
 
 .cursor {
-  animation: blink 0.8s infinite;
-  color: #8b0000;
+  animation: blink 0.6s infinite;
+  color: #ff0000;
+  text-shadow: 0 0 10px #ff0000;
 }
 
 @keyframes blink {
@@ -224,23 +349,30 @@
 }
 
 @keyframes textReveal {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(15px); filter: blur(4px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
 }
 
 .prettyGirl {
   color: #ff9999;
-  font-size: 1.5rem;
-  margin-top: 1rem;
+  font-size: 1.6rem;
+  margin-top: 1.5rem;
   text-shadow:
-    0 0 20px rgba(255, 153, 153, 0.5),
-    0 2px 4px rgba(0, 0, 0, 0.8);
+    0 0 25px rgba(255, 153, 153, 0.6),
+    0 0 50px rgba(255, 153, 153, 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.9);
+  animation: prettyGirlGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes prettyGirlGlow {
+  from { text-shadow: 0 0 25px rgba(255, 153, 153, 0.6), 0 0 50px rgba(255, 153, 153, 0.3), 0 2px 4px rgba(0, 0, 0, 0.9); }
+  to { text-shadow: 0 0 35px rgba(255, 180, 180, 0.8), 0 0 70px rgba(255, 153, 153, 0.5), 0 2px 4px rgba(0, 0, 0, 0.9); }
 }
 
 /* Input area */
 .inputArea {
   position: absolute;
-  bottom: 15%;
+  bottom: 12%;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -252,24 +384,26 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
 .wrongAnswer {
   font-family: var(--font-creepy);
-  font-size: 1rem;
-  color: #ff6b6b;
-  text-shadow: 0 0 10px rgba(255, 100, 100, 0.5);
+  font-size: 1.1rem;
+  color: #ff4444;
+  text-shadow:
+    0 0 15px rgba(255, 50, 50, 0.7),
+    0 0 30px rgba(255, 0, 0, 0.4);
   text-align: center;
-  max-width: 400px;
-  animation: shake 0.5s ease-in-out;
+  max-width: 450px;
+  animation: wrongShake 0.5s ease-in-out;
 }
 
-@keyframes shake {
+@keyframes wrongShake {
   0%, 100% { transform: translateX(0); }
-  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
-  20%, 40%, 60%, 80% { transform: translateX(4px); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-6px); }
+  20%, 40%, 60%, 80% { transform: translateX(6px); }
 }
 
 /* Light flood effect */
@@ -281,22 +415,63 @@
   height: 100%;
   background: radial-gradient(
     circle at center,
-    rgba(255, 250, 240, 0.9) 0%,
-    rgba(255, 245, 230, 0.7) 50%,
-    rgba(255, 240, 220, 0.5) 100%
+    rgba(255, 250, 240, 0.95) 0%,
+    rgba(255, 245, 230, 0.8) 50%,
+    rgba(255, 240, 220, 0.6) 100%
   );
   pointer-events: none;
   z-index: 100;
-  animation: lightFloodIn 2s ease-out forwards;
+  animation: lightFloodIn 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes lightFloodIn {
   from {
     opacity: 0;
-    transform: scale(0.5);
+    transform: scale(0.3);
   }
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+/* Ambient particles */
+.particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 6;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: rgba(139, 0, 0, 0.6);
+  border-radius: 50%;
+  left: var(--x);
+  bottom: -10px;
+  animation: particleRise var(--duration) ease-in-out var(--delay) infinite;
+  box-shadow: 0 0 6px rgba(139, 0, 0, 0.4);
+}
+
+@keyframes particleRise {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-100vh) scale(0.5);
+    opacity: 0;
   }
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { TextInput } from '../components/TextInput';
 import { HintButton } from '../components/HintButton';
 import { Transition } from '../components/Transition';
@@ -20,6 +20,17 @@ const HINTS = [
   '02-14-2025.',
 ];
 
+// Glitch text variations
+const glitchChars = '!@#$%^&*()_+-=[]{}|;:,.<>?░▒▓█▀▄';
+const glitchText = (text) => {
+  return text.split('').map((char) => {
+    if (Math.random() > 0.85 && char !== ' ') {
+      return glitchChars[Math.floor(Math.random() * glitchChars.length)];
+    }
+    return char;
+  }).join('');
+};
+
 export function Room5Lair({ onComplete, onHintUsed }) {
   const [inputValue, setInputValue] = useState('');
   const [showWrongAnswer, setShowWrongAnswer] = useState(false);
@@ -31,6 +42,17 @@ export function Room5Lair({ onComplete, onHintUsed }) {
   const [successPhase, setSuccessPhase] = useState(0);
   const [jumpScare, setJumpScare] = useState(false);
   const [eyesGlowing, setEyesGlowing] = useState(false);
+
+  // Premium effects state
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+  const [heartbeatIntensity, setHeartbeatIntensity] = useState(1);
+  const [screenFlicker, setScreenFlicker] = useState(false);
+  const [glitchActive, setGlitchActive] = useState(false);
+  const [staticNoise, setStaticNoise] = useState(0);
+  const [breathPhase, setBreathPhase] = useState(0);
+
+  const containerRef = useRef(null);
+  const lastMouseMove = useRef(Date.now());
 
   // Typewriter for current line
   const { displayText, isComplete } = useTypewriter(
@@ -47,6 +69,63 @@ export function Room5Lair({ onComplete, onHintUsed }) {
     return () => ambient.stop();
   }, []);
 
+  // Mouse tracking for dynamic spotlight
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      setMousePos({ x, y });
+      lastMouseMove.current = Date.now();
+
+      // Increase heartbeat when mouse moves fast
+      const speed = Math.abs(e.movementX) + Math.abs(e.movementY);
+      if (speed > 10) {
+        setHeartbeatIntensity((prev) => Math.min(prev + 0.1, 2));
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Heartbeat decay and breathing effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Decay heartbeat intensity when still
+      if (Date.now() - lastMouseMove.current > 500) {
+        setHeartbeatIntensity((prev) => Math.max(prev - 0.05, 0.8));
+      }
+
+      // Breathing cycle
+      setBreathPhase((prev) => (prev + 1) % 100);
+    }, 50);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Random screen effects
+  useEffect(() => {
+    const flickerInterval = setInterval(() => {
+      // Random screen flicker
+      if (Math.random() > 0.95) {
+        setScreenFlicker(true);
+        setTimeout(() => setScreenFlicker(false), 100);
+      }
+
+      // Random glitch
+      if (Math.random() > 0.92) {
+        setGlitchActive(true);
+        setTimeout(() => setGlitchActive(false), 150);
+      }
+
+      // Random static noise level
+      setStaticNoise(Math.random() * 0.15);
+    }, 200);
+
+    return () => clearInterval(flickerInterval);
+  }, []);
+
   // Progress through intro lines
   useEffect(() => {
     if (isComplete && currentLineIndex < BIGGIE_INTRO.length - 1) {
@@ -55,7 +134,6 @@ export function Room5Lair({ onComplete, onHintUsed }) {
       }, 1500);
       return () => clearTimeout(timer);
     } else if (isComplete && currentLineIndex === BIGGIE_INTRO.length - 1) {
-      // Show input after last line
       const timer = setTimeout(() => {
         setShowInput(true);
       }, 1000);
@@ -63,14 +141,14 @@ export function Room5Lair({ onComplete, onHintUsed }) {
     }
   }, [isComplete, currentLineIndex]);
 
-  // Random eye glow effect
+  // Random eye glow effect - more frequent
   useEffect(() => {
     const interval = setInterval(() => {
-      if (Math.random() > 0.7) {
+      if (Math.random() > 0.5) {
         setEyesGlowing(true);
-        setTimeout(() => setEyesGlowing(false), 500);
+        setTimeout(() => setEyesGlowing(false), 300 + Math.random() * 400);
       }
-    }, 3000);
+    }, 2000);
     return () => clearInterval(interval);
   }, []);
 
@@ -81,7 +159,6 @@ export function Room5Lair({ onComplete, onHintUsed }) {
       setShowSuccess(true);
       setSuccessPhase(0);
 
-      // Progress through success messages
       const timers = [
         setTimeout(() => setSuccessPhase(1), 2000),
         setTimeout(() => setSuccessPhase(2), 4000),
@@ -90,6 +167,14 @@ export function Room5Lair({ onComplete, onHintUsed }) {
 
       return () => timers.forEach(clearTimeout);
     } else {
+      // Intense wrong answer effect
+      setScreenFlicker(true);
+      setGlitchActive(true);
+      setTimeout(() => {
+        setScreenFlicker(false);
+        setGlitchActive(false);
+      }, 500);
+
       setWrongMessage("No. That's not when the words were real. Think. Feel. Remember.");
       setShowWrongAnswer(true);
       setTimeout(() => setShowWrongAnswer(false), 3000);
@@ -103,7 +188,13 @@ export function Room5Lair({ onComplete, onHintUsed }) {
 
   const handleEyeClick = () => {
     setJumpScare(true);
-    setTimeout(() => setJumpScare(false), 500);
+    setScreenFlicker(true);
+    setGlitchActive(true);
+    setTimeout(() => {
+      setJumpScare(false);
+      setScreenFlicker(false);
+      setGlitchActive(false);
+    }, 500);
   };
 
   const successMessages = [
@@ -112,14 +203,47 @@ export function Room5Lair({ onComplete, onHintUsed }) {
     "...pretty girl.",
   ];
 
+  // Calculate breathing scale
+  const breathScale = 1 + Math.sin(breathPhase * 0.0628) * 0.02;
+
+  // Render glitched text
+  const renderText = (text) => {
+    if (glitchActive) {
+      return glitchText(text);
+    }
+    return text;
+  };
+
   return (
     <Transition isVisible={isVisible}>
-      <div className={`${styles.room5} ${jumpScare ? styles.jumpScare : ''}`}>
+      <div
+        ref={containerRef}
+        className={`${styles.room5} ${jumpScare ? styles.jumpScare : ''} ${screenFlicker ? styles.screenFlicker : ''}`}
+        style={{
+          '--mouse-x': `${mousePos.x}%`,
+          '--mouse-y': `${mousePos.y}%`,
+          '--heartbeat': heartbeatIntensity,
+          '--breath-scale': breathScale,
+          '--static-opacity': staticNoise,
+        }}
+      >
+        {/* Static noise overlay */}
+        <div className={styles.staticNoise} />
+
         {/* Dark overlay with moving shadows */}
         <div className={styles.shadowOverlay} />
 
-        {/* Spotlight effect */}
+        {/* Dynamic spotlight following cursor */}
+        <div className={styles.dynamicSpotlight} />
+
+        {/* Secondary ambient spotlight */}
         <div className={styles.spotlight} />
+
+        {/* Vignette */}
+        <div className={styles.vignette} />
+
+        {/* Heartbeat pulse overlay */}
+        <div className={styles.heartbeatOverlay} />
 
         {/* Biggie on pedestal */}
         <div className={`${styles.biggieContainer} ${showSuccess ? styles.biggieSuccess : ''}`}>
@@ -130,7 +254,6 @@ export function Room5Lair({ onComplete, onHintUsed }) {
               alt="Biggie"
               className={styles.biggieImage}
               onError={(e) => {
-                // Fallback to silhouette if lair image doesn't exist
                 e.target.src = `${import.meta.env.BASE_URL}images/biggie/biggie-silhouette.svg`;
               }}
             />
@@ -146,8 +269,8 @@ export function Room5Lair({ onComplete, onHintUsed }) {
         {/* Biggie's speech */}
         <div className={styles.speechContainer}>
           {!showSuccess ? (
-            <p className={styles.biggieText}>
-              "{displayText}"
+            <p className={`${styles.biggieText} ${glitchActive ? styles.glitchText : ''}`}>
+              "{renderText(displayText)}"
               {!isComplete && <span className={styles.cursor}>|</span>}
             </p>
           ) : (
@@ -178,7 +301,9 @@ export function Room5Lair({ onComplete, onHintUsed }) {
             />
             <HintButton hints={HINTS} onHintUsed={handleHintUsed} roomId={5} />
             {showWrongAnswer && (
-              <p className={styles.wrongAnswer}>"{wrongMessage}"</p>
+              <p className={`${styles.wrongAnswer} ${styles.glitchText}`}>
+                "{renderText(wrongMessage)}"
+              </p>
             )}
           </div>
         )}
@@ -187,6 +312,21 @@ export function Room5Lair({ onComplete, onHintUsed }) {
         {showSuccess && successPhase >= 2 && (
           <div className={styles.lightFlood} />
         )}
+
+        {/* Ambient particles */}
+        <div className={styles.particles}>
+          {[...Array(20)].map((_, i) => (
+            <div
+              key={i}
+              className={styles.particle}
+              style={{
+                '--delay': `${i * 0.5}s`,
+                '--x': `${Math.random() * 100}%`,
+                '--duration': `${8 + Math.random() * 4}s`,
+              }}
+            />
+          ))}
+        </div>
       </div>
     </Transition>
   );

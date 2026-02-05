@@ -52,6 +52,9 @@ export function Room4Music({ onComplete, onHintUsed }) {
   const [isVisible, setIsVisible] = useState(false);
   const [showWrongAnswer, setShowWrongAnswer] = useState(false);
 
+  // Easter egg: "The Largest" red flash
+  const [largestEasterEgg, setLargestEasterEgg] = useState(false);
+
   // Rhythm game state
   const [rhythmActive, setRhythmActive] = useState(false);
   const [beatIndex, setBeatIndex] = useState(0);
@@ -83,6 +86,13 @@ export function Room4Music({ onComplete, onHintUsed }) {
   const handleHotspotClick = useCallback((hotspot) => {
     const fragment = fragments.find((f) => f.id === hotspot.fragmentId);
     if (!fragment || collectedFragments.includes(fragment.id)) return;
+
+    // Easter egg: "The Largest" triggers red flash loop
+    if (fragment.id === 'decoy-4') {
+      setLargestEasterEgg(true);
+      // Stop after 5 seconds
+      setTimeout(() => setLargestEasterEgg(false), 5000);
+    }
 
     // Show the fragment
     setShowFragment(fragment);
@@ -322,6 +332,16 @@ export function Room4Music({ onComplete, onHintUsed }) {
             <HintButton hints={HINTS} onHintUsed={handleHintUsed} roomId={4} />
           </div>
         </div>
+
+        {/* Easter egg: "The Largest" red flash */}
+        {largestEasterEgg && (
+          <div className={styles.largestEasterEgg}>
+            <div className={styles.redFlashOverlay} />
+            <div className={styles.largestText}>
+              BIG X DA PLUG! 🔥
+            </div>
+          </div>
+        )}
       </div>
     </Transition>
   );
