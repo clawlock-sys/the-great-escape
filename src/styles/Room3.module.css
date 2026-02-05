@@ -5,6 +5,35 @@
   background-size: cover;
   font-family: var(--font-body);
   overflow: hidden;
+  /* Warm candlelit Italian evening */
+  filter: saturate(1.2) contrast(1.03);
+}
+
+/* Floating dust particles in candlelight */
+.room3::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(255, 220, 150, 0.4), transparent),
+    radial-gradient(1px 1px at 80% 20%, rgba(255, 200, 100, 0.3), transparent),
+    radial-gradient(1px 1px at 40% 60%, rgba(255, 210, 120, 0.35), transparent),
+    radial-gradient(1px 1px at 70% 80%, rgba(255, 190, 90, 0.3), transparent),
+    radial-gradient(1px 1px at 10% 70%, rgba(255, 200, 100, 0.25), transparent);
+  background-size: 200px 200px;
+  animation: dustFloat 20s linear infinite;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.6;
+}
+
+@keyframes dustFloat {
+  0% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-20px) translateX(10px); }
+  100% { transform: translateY(0) translateX(0); }
 }
 
 /* Candlelit warm overlay */
