@@ -17,7 +17,7 @@
 >
 > *"Find your way out. Remember what matters. Escape."*
 
-**The Twist:** Throughout the experience, there are hints of a mysterious presence — glimpses of red, cryptic messages, watching eyes. In Room 5, it's revealed: **Biggie the Jellycat** has been the mastermind all along. He's the guardian of the final door.
+**The Twist:** Throughout the experience, there are hints of a mysterious presence — glimpses of red, cryptic messages, watching eyes. In Room 5, it's revealed: **Biggie the Jellycat Bunny** has been the mastermind all along. He's the guardian of the final door.
 
 **Tone Progression:**
 - Room 0-1: Creepy, unsettling
@@ -240,12 +240,12 @@ The wine bottle label reads:
 
 ```
 CASA DEL CUORE
-Reserve 2024
-"Ten roses. Five lilies. Twenty-four months aged."
+Reserve 2025
+"Two roses. Eight lilies. Twenty-five months aged."
 San Diego Valley
 ```
 
-**Ten = 10, Five = 5, Twenty-four = 24**
+**Two = 2, Eight = 8, Twenty-five = 25**
 
 But the input wants a word, not numbers...
 
@@ -255,9 +255,9 @@ The receipt has a handwritten note at the bottom:
 > *"The perfect evening is spelled out on the table. Unscramble what matters."*
 
 On the table, letter tiles are scattered (like Scrabble pieces):
-`O - C - T - O - B - E - R - F - I - F - T - H`
+`F - E - B - R - U - A - R - Y - E - I - G - H - T - H`
 
-**Solution:** `OCTOBER FIFTH` or `OCTOBERFIFTH`
+**Solution:** `FERUARY EIGHTH` or `FEBRUARYEIGHTH`
 
 (This is their first date written as words)
 
@@ -290,17 +290,16 @@ A note on the jukebox:
 > *"First feeling. First words. First always."*
 
 **Five records on the wall (clickable, draggable to jukebox slots):**
-1. "Golden Hour" — random (misdirection)
+1. "The Largest" — BigXDaPlug (misdirection)
 2. "I Love You, I'm Sorry" — Gracie Abrams ← **THE SONG**
-3. "First Date" — Blink-182 (misdirection)
-4. "San Diego" — random (misdirection)
-5. "Valentine" — random (misdirection)
+3. "back to friends" — sombr (misdirection)
+4. "Vienna" — Billy Joel (misdirection)
+5. "Valentine" — Laufey (misdirection)
 
 **The trick:** Only ONE song matters. The puzzle isn't about order — it's about **finding the right song**.
 
 When she clicks "I Love You, I'm Sorry" a waveform appears. She must **click/tap at the right moment** in the waveform — the moment where the song emotionally peaks (or where "I love you" is said).
 
-**Simplified version:** Just select the correct song from 5 options and hit play.
 
 **Input:** Select song → If correct, plays a clip and door unlocks.
 
@@ -308,8 +307,7 @@ When she clicks "I Love You, I'm Sorry" a waveform appears. She must **click/tap
 
 **Misdirections:**
 - Other songs seem thematically relevant
-- "Valentine" seems too obvious (trap)
-- "First Date" matches the memory but not *your* song
+- the other songs play their audio
 
 **Hints:**
 1. *"Not just any love song. YOUR love song."*
@@ -394,7 +392,7 @@ After 7 attempts: *"I'll buy you Thai food"*
 After 10 attempts: *"Biggie says you have to"*
 After 15 attempts: Button shrinks to 1 pixel, effectively uncatchable
 
-**NO is impossible to click.** (Unless she's insanely fast or uses keyboard — if keyboard Tab+Enter works, that's a fun easter egg: show "fine, but Biggie is disappointed" then redirect to YES path anyway)
+**NO is impossible to click.** (Unless she uses keyboard — if keyboard Tab+Enter works, that's a fun easter egg: show "fine, but Biggie is disappointed" then redirect to YES path anyway)
 
 **YES BUTTON BEHAVIOR:**
 

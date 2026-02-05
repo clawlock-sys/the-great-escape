@@ -1,0 +1,160 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  position: relative;
+  background: linear-gradient(135deg, #fff8e7 0%, #ffe4b5 100%);
+  border-radius: 16px;
+  padding: 1.5rem;
+  max-width: 90vw;
+  max-height: 90vh;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  animation: scaleIn 0.3s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.closeButton {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: #8b0000;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, background 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.closeButton:hover {
+  transform: scale(1.1);
+  background: #a00000;
+}
+
+.imageContainer {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.stallImage {
+  display: block;
+  max-width: 70vw;
+  max-height: 60vh;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.stallInfo {
+  text-align: center;
+  margin-top: 1rem;
+  padding: 0.5rem;
+}
+
+.stallName {
+  font-family: var(--font-elegant);
+  font-size: 1.5rem;
+  color: #2d3748;
+  margin: 0 0 0.5rem 0;
+}
+
+/* First letter styled like hand-painted sign - blends with text */
+.firstLetter {
+  color: #4a3728;
+  font-size: 1.8rem;
+  font-weight: 700;
+  font-style: italic;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* Subtle glow only on hover */
+.stallName:hover .firstLetter {
+  color: #5d4037;
+  text-shadow: 0 0 8px rgba(93, 64, 55, 0.4);
+}
+
+.stallItems {
+  font-size: 1rem;
+  color: #718096;
+  margin: 0;
+}
+
+/* Subtle carved/scratched "A" for abandoned stall */
+.glowingLetter {
+  position: absolute;
+  bottom: 15%;
+  right: 12%;
+  font-family: serif;
+  font-size: 3rem;
+  font-weight: 400;
+  color: transparent;
+  /* Carved wood effect - inset shadow */
+  background: linear-gradient(
+    145deg,
+    rgba(60, 45, 35, 0.6) 0%,
+    rgba(40, 30, 25, 0.8) 50%,
+    rgba(30, 22, 18, 0.6) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow:
+    1px 1px 0 rgba(80, 60, 50, 0.3),
+    -1px -1px 0 rgba(20, 15, 12, 0.5),
+    2px 2px 4px rgba(0, 0, 0, 0.2);
+  opacity: 0.5;
+  pointer-events: none;
+  /* Slight rotation like it was hastily scratched */
+  transform: rotate(-8deg);
+  letter-spacing: -2px;
+}
+
+/* Very subtle pulse - barely noticeable */
+.glowingLetter {
+  animation: subtlePulse 4s infinite ease-in-out;
+}
+
+@keyframes subtlePulse {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}

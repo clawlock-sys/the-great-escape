@@ -4,7 +4,7 @@ import { usePersistedState } from './usePersistedState';
 const initialGameState = {
   currentRoom: 0,
   rooms: {
-    0: { completed: false, attempts: 0 },
+    0: { completed: false, attempts: 0, hintsUsed: 0 },
     1: { completed: false, attempts: 0, hintsUsed: 0 },
     2: { completed: false, foundNashes: [], attempts: 0, hintsUsed: 0 },
     3: { completed: false, attempts: 0, hintsUsed: 0 },

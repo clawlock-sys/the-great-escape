@@ -7,7 +7,7 @@ const hash = (str) => {
 export const SOLUTIONS = {
   0: hash('10052024'),     // Date: Oct 5, 2024
   1: hash('ristora'),      // Market vendor initials
-  2: hash('ilando'),       // Nash letters
+  2: hash('illando'),      // Nash letters - two L's
   3: hash('octoberfifth'), // Anagram answer
   4: 'i-love-you-im-sorry', // Selection, not typed
   5: hash('02142025'),     // Date: Feb 14, 2025
