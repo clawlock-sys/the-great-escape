@@ -150,7 +150,7 @@ export function Room2Apartment({ onComplete, onHintUsed }) {
   const [isVisible, setIsVisible] = useState(false);
   const [foundNashes, setFoundNashes] = useState(new Set());
   const [showModal, setShowModal] = useState(null);
-  const [debugMode, setDebugMode] = useState(true); // Enabled by default for hotspot alignment
+  const [debugMode, setDebugMode] = useState(false);
 
   // Window lock puzzle state
   const [showWindowZoom, setShowWindowZoom] = useState(false);
