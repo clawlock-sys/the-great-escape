@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 250" fill="#8b0000">
+  <!-- Biggie the Jellycat silhouette - eerie stuffed animal shape -->
+
+  <!-- Body - round plush shape -->
+  <ellipse cx="100" cy="150" rx="70" ry="80" opacity="0.9"/>
+
+  <!-- Head - slightly smaller circle on top -->
+  <circle cx="100" cy="70" r="50" opacity="0.95"/>
+
+  <!-- Left ear - small rounded triangle -->
+  <ellipse cx="60" cy="30" rx="18" ry="25" transform="rotate(-15 60 30)" opacity="0.85"/>
+
+  <!-- Right ear - small rounded triangle -->
+  <ellipse cx="140" cy="30" rx="18" ry="25" transform="rotate(15 140 30)" opacity="0.85"/>
+
+  <!-- Left arm - stubby jellycat arm -->
+  <ellipse cx="35" cy="140" rx="20" ry="35" transform="rotate(-20 35 140)" opacity="0.8"/>
+
+  <!-- Right arm - stubby jellycat arm -->
+  <ellipse cx="165" cy="140" rx="20" ry="35" transform="rotate(20 165 140)" opacity="0.8"/>
+
+  <!-- Left leg - short stubby leg -->
+  <ellipse cx="60" cy="220" rx="22" ry="30" opacity="0.85"/>
+
+  <!-- Right leg - short stubby leg -->
+  <ellipse cx="140" cy="220" rx="22" ry="30" opacity="0.85"/>
+
+  <!-- Eyes - glowing/watching effect -->
+  <circle cx="80" cy="65" r="8" fill="#ff0000" opacity="0.7"/>
+  <circle cx="120" cy="65" r="8" fill="#ff0000" opacity="0.7"/>
+
+  <!-- Inner eye glow -->
+  <circle cx="80" cy="65" r="3" fill="#ffffff" opacity="0.5"/>
+  <circle cx="120" cy="65" r="3" fill="#ffffff" opacity="0.5"/>
+</svg>
