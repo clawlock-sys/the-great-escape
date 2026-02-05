@@ -1,0 +1,302 @@
+.room5 {
+  position: relative;
+  min-height: 100vh;
+  background: #0a0a0a;
+  font-family: var(--font-body);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Jump scare effect */
+.jumpScare {
+  animation: jumpScare 0.5s ease-out;
+}
+
+@keyframes jumpScare {
+  0% { transform: scale(1); }
+  15% { transform: scale(1.15); }
+  30% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Moving shadows overlay */
+.shadowOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(30, 0, 0, 0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(30, 0, 0, 0.3) 0%, transparent 50%);
+  animation: shadowMove 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes shadowMove {
+  0%, 100% {
+    background-position: 0% 0%, 100% 100%;
+    opacity: 0.5;
+  }
+  50% {
+    background-position: 10% 10%, 90% 90%;
+    opacity: 0.8;
+  }
+}
+
+/* Spotlight effect */
+.spotlight {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 400px;
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 30%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Biggie container */
+.biggieContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+  transition: all 1s ease;
+}
+
+.biggieSuccess {
+  filter: brightness(1.3);
+}
+
+/* Pedestal */
+.pedestal {
+  width: 120px;
+  height: 40px;
+  background: linear-gradient(
+    to bottom,
+    #2a2a2a 0%,
+    #1a1a1a 50%,
+    #0a0a0a 100%
+  );
+  border-radius: 8px 8px 0 0;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.8),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1);
+  margin-top: -10px;
+}
+
+/* Biggie */
+.biggie {
+  position: relative;
+  width: 180px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.biggieImage {
+  max-width: 100%;
+  max-height: 100%;
+  filter: drop-shadow(0 0 20px rgba(139, 0, 0, 0.5));
+  animation: biggieFloat 4s ease-in-out infinite;
+}
+
+@keyframes biggieFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* Biggie's eyes - clickable area */
+.biggieEyes {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 30px;
+  cursor: pointer;
+  z-index: 15;
+}
+
+.eyesGlowing::before,
+.eyesGlowing::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle, #ff0000, #8b0000);
+  border-radius: 50%;
+  box-shadow: 0 0 15px #ff0000, 0 0 30px #ff0000;
+  animation: eyeGlow 0.5s ease-in-out;
+}
+
+.eyesGlowing::before {
+  left: 20%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.eyesGlowing::after {
+  right: 20%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@keyframes eyeGlow {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+/* Biggie glow */
+.biggieGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(
+    circle,
+    rgba(139, 0, 0, 0.2) 0%,
+    rgba(139, 0, 0, 0.1) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+/* Speech container */
+.speechContainer {
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 600px;
+  text-align: center;
+  z-index: 20;
+}
+
+.biggieText {
+  font-family: var(--font-creepy);
+  font-size: 1.3rem;
+  color: #e8d8c8;
+  text-shadow:
+    0 0 10px rgba(139, 0, 0, 0.5),
+    0 2px 4px rgba(0, 0, 0, 0.8);
+  line-height: 1.6;
+  margin: 0.5rem 0;
+}
+
+.cursor {
+  animation: blink 0.8s infinite;
+  color: #8b0000;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.successText {
+  animation: fadeIn 1s ease-out;
+}
+
+.successText .biggieText {
+  animation: textReveal 1s ease-out;
+}
+
+@keyframes textReveal {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.prettyGirl {
+  color: #ff9999;
+  font-size: 1.5rem;
+  margin-top: 1rem;
+  text-shadow:
+    0 0 20px rgba(255, 153, 153, 0.5),
+    0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* Input area */
+.inputArea {
+  position: absolute;
+  bottom: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  z-index: 30;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.wrongAnswer {
+  font-family: var(--font-creepy);
+  font-size: 1rem;
+  color: #ff6b6b;
+  text-shadow: 0 0 10px rgba(255, 100, 100, 0.5);
+  text-align: center;
+  max-width: 400px;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+/* Light flood effect */
+.lightFlood {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 250, 240, 0.9) 0%,
+    rgba(255, 245, 230, 0.7) 50%,
+    rgba(255, 240, 220, 0.5) 100%
+  );
+  pointer-events: none;
+  z-index: 100;
+  animation: lightFloodIn 2s ease-out forwards;
+}
+
+@keyframes lightFloodIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

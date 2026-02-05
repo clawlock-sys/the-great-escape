@@ -1,0 +1,8 @@
+{
+  "run_id": "0003-room0-room1",
+  "feature": "Room 0 (Entry) and Room 1 (Market)",
+  "mode": "single-loop",
+  "created_at": "2026-02-04",
+  "workers": ["main"],
+  "status": "DEP_COMPLETE"
+}

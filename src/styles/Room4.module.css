@@ -1,0 +1,306 @@
+.room4 {
+  position: relative;
+  min-height: 100vh;
+  background: url('/assets/room4/Music Bar.png') center center no-repeat;
+  background-size: cover;
+  font-family: var(--font-body);
+  overflow: hidden;
+}
+
+/* Purple/blue moody lighting overlay */
+.lightingOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at 50% 60%,
+    transparent 0%,
+    rgba(75, 0, 130, 0.15) 40%,
+    rgba(25, 25, 112, 0.3) 70%,
+    rgba(10, 10, 40, 0.6) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Jukebox note */
+.jukeboxNote {
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(20, 15, 30, 0.9);
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(138, 43, 226, 0.3);
+  text-align: center;
+  z-index: 20;
+}
+
+.jukeboxNote p {
+  font-family: var(--font-elegant);
+  font-style: italic;
+  color: #d8b4fe;
+  margin: 0.25rem 0;
+  font-size: 0.95rem;
+  text-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
+}
+
+/* Records wall */
+.recordsWall {
+  position: absolute;
+  top: 22%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1.5rem;
+  z-index: 20;
+}
+
+.record {
+  width: 120px;
+  height: 120px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.record:hover {
+  transform: scale(1.08) rotate(-5deg);
+}
+
+.recordSelected {
+  transform: scale(1.1);
+}
+
+.recordDisc {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    #1a1a1a 0%,
+    #1a1a1a 15%,
+    #2d2d2d 16%,
+    #1a1a1a 17%,
+    #2d2d2d 30%,
+    #1a1a1a 31%,
+    #2d2d2d 45%,
+    #1a1a1a 46%,
+    #2d2d2d 60%,
+    #1a1a1a 61%,
+    #2d2d2d 75%,
+    #1a1a1a 76%,
+    #2d2d2d 90%,
+    #1a1a1a 91%
+  );
+  box-shadow:
+    0 4px 15px rgba(0, 0, 0, 0.5),
+    inset 0 0 30px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.recordSpinning .recordDisc {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.recordLabel {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  text-align: center;
+}
+
+.songTitle {
+  font-size: 0.45rem;
+  font-weight: bold;
+  color: white;
+  line-height: 1.1;
+  margin-bottom: 2px;
+}
+
+.songArtist {
+  font-size: 0.35rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.1;
+}
+
+/* Jukebox */
+.jukebox {
+  position: absolute;
+  bottom: 22%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 350px;
+  z-index: 20;
+}
+
+.jukeboxScreen {
+  background: linear-gradient(135deg, #1e1b4b, #312e81);
+  border: 3px solid #6366f1;
+  border-radius: 12px;
+  padding: 1.5rem;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 0 20px rgba(99, 102, 241, 0.3),
+    inset 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.jukeboxGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 200px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(139, 92, 246, 0.2) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+.jukeboxPrompt {
+  font-family: var(--font-elegant);
+  font-style: italic;
+  color: #a5b4fc;
+  font-size: 1.1rem;
+  text-shadow: 0 0 10px rgba(165, 180, 252, 0.5);
+}
+
+.nowPlaying {
+  text-align: center;
+  color: #c4b5fd;
+}
+
+.nowPlaying p {
+  margin: 0.25rem 0;
+}
+
+.waveform {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  height: 30px;
+  align-items: flex-end;
+}
+
+.waveform span {
+  width: 6px;
+  background: linear-gradient(to top, #8b5cf6, #c4b5fd);
+  border-radius: 2px;
+  animation: wave 0.5s ease-in-out infinite;
+}
+
+.waveform span:nth-child(1) { height: 10px; animation-delay: 0s; }
+.waveform span:nth-child(2) { height: 20px; animation-delay: 0.1s; }
+.waveform span:nth-child(3) { height: 30px; animation-delay: 0.2s; }
+.waveform span:nth-child(4) { height: 20px; animation-delay: 0.3s; }
+.waveform span:nth-child(5) { height: 10px; animation-delay: 0.4s; }
+
+@keyframes wave {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.5); }
+}
+
+.currentSong {
+  font-family: var(--font-creepy);
+  font-size: 1.2rem;
+  color: #e9d5ff;
+  text-shadow: 0 0 15px rgba(233, 213, 255, 0.5);
+}
+
+.wrongChoice {
+  text-align: center;
+  color: #f87171;
+}
+
+.wrongChoice p {
+  margin: 0.25rem 0;
+}
+
+.tryAgain {
+  font-size: 0.9rem;
+  color: #fca5a5;
+  font-style: italic;
+}
+
+.successMessage {
+  text-align: center;
+  animation: glow 1s ease-in-out infinite alternate;
+}
+
+.successMessage p {
+  margin: 0.25rem 0;
+  color: #86efac;
+}
+
+.songMemory {
+  font-family: var(--font-creepy);
+  font-size: 1.3rem;
+  color: #bbf7d0;
+  text-shadow: 0 0 20px rgba(134, 239, 172, 0.5);
+}
+
+@keyframes glow {
+  from { filter: brightness(1); }
+  to { filter: brightness(1.2); }
+}
+
+/* Bottom panel */
+.bottomPanel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(
+    to top,
+    rgba(15, 10, 30, 0.95) 0%,
+    rgba(15, 10, 30, 0.8) 60%,
+    transparent 100%
+  );
+  padding: 1.5rem 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 30;
+}
+
+.prompt {
+  font-family: var(--font-elegant);
+  font-size: 1.1rem;
+  font-style: italic;
+  color: #c4b5fd;
+  margin-bottom: 0.75rem;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}

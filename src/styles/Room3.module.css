@@ -1,0 +1,443 @@
+.room3 {
+  position: relative;
+  min-height: 100vh;
+  background: url('/assets/room3/illando-bg.png') center center no-repeat;
+  background-size: cover;
+  font-family: var(--font-body);
+  overflow: hidden;
+}
+
+/* Candlelit warm overlay */
+.candleOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at 50% 40%,
+    transparent 0%,
+    transparent 30%,
+    rgba(80, 40, 10, 0.2) 60%,
+    rgba(40, 20, 5, 0.5) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 0.2s ease;
+}
+
+.candleOverlay.flicker {
+  animation: candleFlicker 0.5s ease-in-out;
+}
+
+@keyframes candleFlicker {
+  0%, 100% { opacity: 1; }
+  25% { opacity: 0.6; }
+  50% { opacity: 0.9; }
+  75% { opacity: 0.7; }
+}
+
+/* Hotspots */
+.hotspot {
+  position: absolute;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.hotspot:hover {
+  background: rgba(255, 200, 100, 0.15);
+  box-shadow: 0 0 15px rgba(255, 200, 100, 0.2);
+}
+
+.hotspotDebug {
+  border: 2px dashed rgba(255, 165, 0, 0.7) !important;
+  background: rgba(255, 165, 0, 0.1) !important;
+}
+
+.hotspotLabel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 0 3px black;
+}
+
+/* Debug toggle */
+.debugToggle {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.7rem;
+  background: rgba(0, 0, 0, 0.4);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 100;
+  transition: all 0.2s;
+}
+
+.debugToggle:hover {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+/* Breadstick message */
+.breadstickMsg {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(40, 30, 20, 0.95);
+  color: #e8d8c8;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  font-style: italic;
+  z-index: 50;
+  animation: fadeInOut 2s ease-in-out;
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0; }
+  10%, 90% { opacity: 1; }
+}
+
+/* Tile area - on table */
+.tileArea {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  max-width: 400px;
+  z-index: 20;
+}
+
+/* Individual tiles */
+.tile {
+  width: 45px;
+  height: 50px;
+  background: linear-gradient(135deg, #f5e6d3 0%, #e8d4bc 50%, #d4c4a8 100%);
+  border: 2px solid #8b4513;
+  border-radius: 4px;
+  font-family: var(--font-creepy);
+  font-size: 1.4rem;
+  color: #2a1810;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow:
+    2px 2px 4px rgba(0, 0, 0, 0.3),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.3);
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.tile:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    3px 3px 6px rgba(0, 0, 0, 0.4),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+.tileSelected {
+  border-color: #ffd700;
+  box-shadow:
+    0 0 12px rgba(255, 215, 0, 0.6),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.3);
+  transform: translateY(-3px);
+}
+
+.tileShake {
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+/* Answer area */
+.answerArea {
+  position: absolute;
+  bottom: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  z-index: 20;
+}
+
+.answerSlots {
+  display: flex;
+  gap: 4px;
+}
+
+.answerSlot {
+  width: 40px;
+  height: 46px;
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.answerSlot:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.answerSlotFilled {
+  border-style: solid;
+  border-color: rgba(74, 124, 89, 0.6);
+  background: rgba(74, 124, 89, 0.2);
+}
+
+.slotLetter {
+  font-family: var(--font-creepy);
+  font-size: 1.3rem;
+  color: #f5e6d3;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.slotLetter.tileSelected {
+  color: #ffd700;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+}
+
+.submitButton {
+  padding: 0.6rem 1.5rem;
+  background: linear-gradient(135deg, #8b4513, #654321);
+  color: #f5e6d3;
+  border: 2px solid #a0522d;
+  border-radius: 6px;
+  font-family: var(--font-elegant);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.submitButton:hover {
+  background: linear-gradient(135deg, #a0522d, #8b4513);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Bottom panel */
+.bottomPanel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(
+    to top,
+    rgba(30, 20, 10, 0.95) 0%,
+    rgba(30, 20, 10, 0.8) 60%,
+    transparent 100%
+  );
+  padding: 1.5rem 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 30;
+}
+
+.prompt {
+  font-family: var(--font-elegant);
+  font-size: 1.1rem;
+  font-style: italic;
+  color: #e8d8c8;
+  margin-bottom: 0.75rem;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.wrongAnswer {
+  color: #ff6b6b;
+  font-size: 0.9rem;
+  text-shadow: 0 0 8px rgba(255, 100, 100, 0.5);
+  margin: 0;
+  animation: pulse 0.5s ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* Modal */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  position: relative;
+  background: linear-gradient(135deg, #f5ebe0 0%, #e8dcc8 100%);
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 350px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: scaleIn 0.2s ease-out;
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.closeButton {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: #654321;
+  color: white;
+  font-size: 1.3rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.closeButton:hover {
+  background: #8b4513;
+  transform: scale(1.1);
+}
+
+/* Menu modal */
+.menuModal {
+  color: #2a1810;
+}
+
+.menuModal h2 {
+  font-family: var(--font-elegant);
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #8b4513;
+  padding-bottom: 0.5rem;
+}
+
+.menuSection {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.menuSection h3 {
+  font-family: var(--font-elegant);
+  font-size: 0.9rem;
+  color: #8b4513;
+  margin-bottom: 0.25rem;
+  letter-spacing: 2px;
+}
+
+.menuSection p {
+  font-style: italic;
+  font-size: 0.95rem;
+  margin: 0;
+  padding-left: 0.5rem;
+}
+
+/* Wine modal */
+.wineModal {
+  color: #2a1810;
+}
+
+.wineLabel {
+  padding: 1rem;
+  border: 3px double #8b4513;
+  border-radius: 8px;
+}
+
+.wineLabel h2 {
+  font-family: var(--font-elegant);
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.wineYear {
+  font-style: italic;
+  font-size: 1.1rem;
+  margin: 0.25rem 0;
+}
+
+.wineRegion {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0;
+}
+
+/* Receipt modal */
+.receiptModal {
+  background: #fff;
+  padding: 1.5rem;
+  font-family: 'Courier New', monospace;
+  color: #333;
+  text-align: center;
+}
+
+.receiptModal h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.receiptLine {
+  border-top: 1px dashed #999;
+  margin: 0.75rem 0;
+}
+
+.receiptModal p {
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+}
+
+.receiptNote {
+  margin-top: 1rem !important;
+  font-style: italic;
+  color: #8b4513;
+  font-family: var(--font-elegant);
+}
