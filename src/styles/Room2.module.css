@@ -1,0 +1,523 @@
+.room2 {
+  position: relative;
+  min-height: 100vh;
+  background: url('/assets/room2/apartment-bg.png') center center no-repeat;
+  background-size: cover;
+  font-family: var(--font-body);
+  overflow: hidden;
+}
+
+/* Warm, cozy vignette */
+.room2::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    transparent 50%,
+    rgba(60, 40, 20, 0.15) 80%,
+    rgba(40, 25, 10, 0.3) 100%
+  );
+  pointer-events: none;
+  z-index: 50;
+}
+
+/* Zone labels */
+.zoneLabel {
+  position: absolute;
+  font-family: var(--font-elegant);
+  font-size: 0.9rem;
+  color: rgba(80, 60, 40, 0.6);
+  font-style: italic;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Hotspots */
+.hotspot {
+  position: absolute;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.hotspot:hover {
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+/* Nash hotspots */
+.nashHotspot {
+  border: 2px solid transparent;
+}
+
+.nashHotspot:hover {
+  border-color: rgba(74, 124, 89, 0.3);
+  box-shadow: 0 0 20px rgba(74, 124, 89, 0.2);
+}
+
+.nashFound {
+  background: rgba(74, 124, 89, 0.1);
+  border-color: rgba(74, 124, 89, 0.2);
+}
+
+.foundMarker {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5rem;
+  color: #4a7c59;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Fake Nash hotspots */
+.fakeHotspot:hover {
+  border-color: rgba(139, 69, 19, 0.3);
+  box-shadow: 0 0 15px rgba(139, 69, 19, 0.2);
+}
+
+/* Biggie hotspot */
+.biggieHotspot {
+  border: 2px solid transparent;
+}
+
+.biggieHotspot:hover {
+  border-color: rgba(139, 0, 0, 0.3);
+  box-shadow: 0 0 20px rgba(139, 0, 0, 0.3);
+}
+
+/* Debug mode */
+.hotspotDebug {
+  border: 2px dashed rgba(255, 0, 0, 0.7) !important;
+  background: rgba(255, 0, 0, 0.1) !important;
+}
+
+.hotspotLabel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 0 3px black;
+}
+
+.debugToggle {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.7rem;
+  background: rgba(0, 0, 0, 0.4);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 100;
+  transition: all 0.2s;
+}
+
+.debugToggle:hover {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+/* Progress panel */
+.progressPanel {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 60;
+}
+
+.nashCount {
+  font-size: 0.9rem;
+  color: #4a4a4a;
+  margin-bottom: 0.5rem;
+}
+
+.letterDisplay {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.letterSlot {
+  width: 28px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e0e0e0;
+  border-radius: 4px;
+  font-family: var(--font-creepy);
+  font-size: 1.1rem;
+  color: #999;
+  transition: all 0.3s ease;
+}
+
+.letterFound {
+  background: #4a7c59;
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(74, 124, 89, 0.4);
+}
+
+.mirrorHint {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #8b0000;
+  font-style: italic;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* Bottom panel */
+.bottomPanel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(
+    to top,
+    rgba(40, 30, 20, 0.95) 0%,
+    rgba(40, 30, 20, 0.8) 60%,
+    transparent 100%
+  );
+  padding: 2rem 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 60;
+}
+
+.prompt {
+  font-family: var(--font-elegant);
+  font-size: 1.2rem;
+  font-style: italic;
+  color: #fff;
+  margin-bottom: 1rem;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: 400px;
+}
+
+.wrongAnswer {
+  color: #ff6b6b;
+  font-size: 0.9rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Modal */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  position: relative;
+  background: linear-gradient(135deg, #fff8f0 0%, #f5e6d8 100%);
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  animation: scaleIn 0.2s ease-out;
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.closeButton {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: #4a4a4a;
+  color: white;
+  font-size: 1.3rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.closeButton:hover {
+  background: #333;
+  transform: scale(1.1);
+}
+
+/* Nash modal */
+.nashModal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nashPhoto,
+.fakePhoto,
+.biggieImage {
+  max-width: 280px;
+  max-height: 350px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.nashPhoto img,
+.fakePhoto img,
+.biggieImage img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* For images that look better cropped (Nash 7) */
+.photoCover {
+  width: 200px;
+  height: 200px;
+}
+
+.photoCover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photoPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholderText {
+  font-size: 1.5rem;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.nashMessage,
+.fakeMessage,
+.biggieMessage {
+  font-family: var(--font-elegant);
+  font-size: 1rem;
+  color: #4a4a4a;
+  font-style: italic;
+}
+
+.revealedLetter {
+  font-family: var(--font-creepy);
+  font-size: 4rem;
+  color: #4a7c59;
+  text-shadow: 0 4px 8px rgba(74, 124, 89, 0.3);
+  animation: letterReveal 0.5s ease-out;
+}
+
+@keyframes letterReveal {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.locationHint {
+  font-size: 0.8rem;
+  color: #888;
+  margin-top: 0.5rem;
+}
+
+/* Fake modal */
+.fakeModal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.fakeMessage {
+  color: #8b4513;
+}
+
+/* Biggie modal */
+.biggieModal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.biggieMessage {
+  color: #8b0000;
+  font-family: var(--font-creepy);
+  font-size: 1.5rem;
+}
+
+/* Window hotspot */
+.windowHotspot:hover {
+  box-shadow: 0 0 20px rgba(255, 200, 100, 0.4);
+}
+
+/* Window zoom overlay */
+.windowZoomOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.windowZoomContainer {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lockImage {
+  max-width: 100%;
+  max-height: 70vh;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+/* Dial puzzle */
+.dialPuzzle {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(40, 30, 20, 0.9);
+  border-radius: 8px;
+}
+
+.dialContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.dialContainer button {
+  background: #4a4a4a;
+  color: white;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.dialContainer button:hover {
+  background: #666;
+}
+
+.dialDisplay {
+  width: 40px;
+  height: 50px;
+  background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+  border: 2px solid #8b0000;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-creepy);
+  font-size: 1.8rem;
+  color: #e8d8c8;
+  text-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+}
+
+.submitDial {
+  align-self: center;
+  margin-left: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: #8b0000;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: var(--font-creepy);
+  font-size: 1rem;
+}
+
+.submitDial:hover {
+  background: #a00;
+}
+
+.dialPuzzleContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dialControls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dialWrongAnswer {
+  color: #ff6b6b;
+  font-size: 1rem;
+  text-shadow: 0 0 10px rgba(255, 100, 100, 0.8);
+  margin: 0;
+  animation: pulse 0.5s ease-in-out;
+}
