@@ -6,8 +6,11 @@ export function useAudio(src, options = {}) {
   const soundRef = useRef(null);
 
   useEffect(() => {
+    // Prefix with base URL for GitHub Pages compatibility
+    const fullPath = src.startsWith('http') ? src : `${import.meta.env.BASE_URL}${src.startsWith('/') ? src.slice(1) : src}`;
+    
     soundRef.current = new Howl({
-      src: [src],
+      src: [fullPath],
       loop: options.loop || false,
       volume: options.volume || 0.5,
     });
