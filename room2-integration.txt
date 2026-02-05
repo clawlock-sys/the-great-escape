@@ -1,0 +1,39 @@
+# Room 2 Integration Task
+
+We have real assets for Room 2 now. Please perform the following updates:
+
+## 1. Background & Layout
+- In `src/rooms/Room2Apartment.jsx`, use `url('/assets/room2/apartment-bg.png')` as the background for the `.room2` container.
+- Set `background-size: cover` and `background-position: center`.
+
+## 2. Character Assets
+Update the `NASH_PHOTOS` and `FAKE_NASHES` arrays to use the following image paths:
+- Nash 1: `/assets/room2/nash-1.png`
+- Nash 2: `/assets/room2/nash-2.png`
+- ...and so on up to Nash 8.
+- Fake 1: `/assets/room2/decoy-1.png`
+- Fake 2: `/assets/room2/decoy-2.png`
+- Fake 3: `/assets/room2/decoy-3.png`
+
+## 3. UI Update (Modal)
+- In the `showModal.type === 'nash'` section, replace the `<div className={styles.photoPlaceholder}>` with an `<img>` tag using the `nash.image` (or whatever property you store the path in).
+- Do the same for `fake` using the decoy image.
+- For `biggie`, use the existing silhouette asset: `/images/biggie/biggie-silhouette.svg`.
+
+## 4. Hotspot Alignment (IMPORTANT)
+The background image `apartment-bg.png` is an isometric view. The current percentages in `NASH_PHOTOS` are guesses. 
+- Please enable `debugMode` by default for now so we can see where they are.
+- Adjust the `position` values to roughly match the visual locations described:
+    - Couch: Middle-left
+    - Fridge: Top-center/right (kitchen area)
+    - TV: Middle-left (near couch)
+    - Book: Shelf on the left
+    - Table: Center/Bottom-center
+    - Closet: Right side
+    - Shower: Middle-top (behind the wall partition)
+    - Mirror: Bedroom area (right side)
+
+## 5. Puzzle Logic
+- Ensure the password `ILANDO` validates correctly (it should be in `solutions.js`).
+
+Go!

@@ -1,0 +1,28 @@
+Awesome work on the Biggie silhouette! Now, let's do a MAJOR visual upgrade with the assets we just generated.
+
+I have placed high-res assets in `public/assets/`.
+
+# Task 1: Room 0 (Office)
+- Update `src/rooms/Room0Entry.jsx` to use `url('/assets/room0/office-desk.png')` as the background image.
+- Ensure it covers the screen (bg-cover bg-center) and sits *behind* the terminal overlay.
+- The terminal/CRT effects should blend with it (maybe multiply or overlay blend mode, or just semi-transparent black background for the terminal container).
+
+# Task 2: Room 1 (Market)
+- Update `src/rooms/Room1Market.jsx`.
+- Background: `url('/assets/room1/market-overview.png')`.
+- Sign: Use `url('/assets/room1/market-sign-cartoon.png')`.
+- **Exploration Mode**:
+  - The user needs to find the password "RISTORA".
+  - Create 7 invisible clickable "hotspots" (divs with absolute positioning) corresponding to the 7 stalls in the `market-overview.png`.
+  - (Since we don't have exact coords, create a simple `debug` mode toggle in the corner that outlines the hotspots so we can drag them/fix them later, or just arrange them in a semi-circle: left-front, left-mid, left-back, center-back, right-back, right-mid, right-front).
+  - **Clicking a hotspot**: Opens a Modal showing the specific stall image from `public/assets/room1/stalls/`.
+    - Stall 1: `rosies-roots.png` (Contains "R")
+    - Stall 2: `ivys-organics.png` (Contains "I")
+    - Stall 3: `sunrise-blooms.png` (Contains "S")
+    - Stall 4: `terra-fruits.png` (Contains "T")
+    - Stall 5: `oak-barrel-honey.png` (Contains "O")
+    - Stall 6: `red-barn-eggs.png` (Contains "R")
+    - Stall 7: `abandoned.png` (Needs an "A" - since the image lacks it, please overlay a subtle glowing "A" on this specific modal using CSS/absolute positioning).
+  - The Modal should be immersive (large image, close button).
+
+Let's start with Room 0. Go!

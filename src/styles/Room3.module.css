@@ -470,3 +470,88 @@
   color: #8b4513;
   font-family: var(--font-elegant);
 }
+
+/* Locked message style */
+.lockedMessage {
+  background: rgba(40, 30, 20, 0.9);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 2px solid #8b4513;
+  text-align: center;
+  color: #e8d8c8;
+  font-family: var(--font-elegant);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.progress {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  justify-content: center;
+}
+
+.progress span {
+  opacity: 0.3;
+  transition: all 0.5s ease;
+  font-size: 0.9rem;
+}
+
+.progress span.unlocked {
+  opacity: 1;
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  transform: scale(1.1);
+}
+
+/* Puzzle input inside modals */
+.puzzleInput {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.puzzleInput p {
+  font-size: 0.85rem;
+  color: #654321;
+  font-weight: bold;
+}
+
+.puzzleInput input {
+  width: 80px;
+  padding: 0.5rem;
+  border: 2px solid #8b4513;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 1.2rem;
+  background: #fff;
+  color: #333;
+}
+
+.puzzleInput button {
+  padding: 0.4rem 1.2rem;
+  background: #8b4513;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.puzzleInput button:hover {
+  background: #a0522d;
+}
+
+.unlockedText {
+  color: #2e7d32;
+  font-weight: bold;
+  margin-top: 1rem !important;
+  font-size: 1.1rem !important;
+}

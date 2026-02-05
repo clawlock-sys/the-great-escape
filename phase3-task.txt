@@ -1,0 +1,47 @@
+Phase 2 is officially DONE and verified! 🥕
+
+Now, let's start **Phase 3: Room 2 (Apartment - Nash Hunt)**.
+
+# Objective
+Build the most interactive room yet: a clickable image hunt for 8 hidden Nash photos.
+
+# Room 2 Requirements (SPEC-v2.md):
+1. **Atmosphere**: 
+   - Warm, cozy, but slightly uncanny (proportions subtly wrong).
+   - Jazzy lo-fi ambient audio (loop).
+   - Illustrated apartment view (I will generate this background in a moment).
+
+2. **The Hunt**:
+   - 8 Nash photos hidden in zones: Living Room, Kitchen, Bedroom.
+   - Each photo, when clicked, reveals a **letter**: **I - L - A - N - D - O**.
+   - **Letter Mechanic**:
+     - Photo 1 (Behind couch): I
+     - Photo 2 (Inside fridge): L
+     - Photo 3 (TV reflection): A
+     - Photo 4 (In book on shelf): N
+     - Photo 5 (Under table): D
+     - Photo 6 (In closet): O
+     - Photo 7 (Shower curtain): **DECOY** (No letter, Nash just waves).
+     - Photo 8 (Mirror reflection): **THE TWIST**. This one ONLY appears after the first 6 are found. Nash holds a sign that says "?".
+   
+3. **Misdirections**:
+   - 3 fake "Red Herring" dudes that look similar but say "That's not him...".
+   - Clicking the red Biggie on the bed says "Not yet.".
+   - Calendars/clocks with decoy numbers.
+
+4. **Solving**:
+   - Letters spell: **ILANDO**.
+   - Input prompt: "The faces show letters. What do they spell?"
+   - Advancement: Solving advances to Room 3.
+
+# Technical DO:
+- Create `src/rooms/Room2Apartment.jsx` and `src/styles/Room2.module.css`.
+- Implement the "Nash Progress" state (track which ones found).
+- Use `ClickableArea` components for the hotspots.
+- For now, use colored squares for the photos. I will generate real Nash assets for you later.
+
+# Deliverables:
+- Playable Room 2.
+- Unit tests for the "found 6, show mirror" logic.
+
+Go!

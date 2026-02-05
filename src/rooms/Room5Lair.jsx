@@ -5,6 +5,7 @@ import { Transition } from '../components/Transition';
 import { useTypewriter } from '../hooks/useTypewriter';
 import { useAudio } from '../hooks/useAudio';
 import { validate } from '../utils/solutions';
+import { Howl } from 'howler';
 import styles from '../styles/Room5.module.css';
 
 const BIGGIE_INTRO = [
@@ -13,6 +14,17 @@ const BIGGIE_INTRO = [
   "I am the keeper of the final door. But you cannot pass without answering.",
   "WHEN DID YOU FIRST SPEAK THE TRUTH? The real truth. The three words.",
 ];
+
+const BIGGIE_VOICES = {
+  INTRO_0: '/audio/biggie-found.mp3',
+  INTRO_1: '/audio/biggie-watching.mp3',
+  INTRO_2: '/audio/biggie-keeper.mp3',
+  INTRO_3: '/audio/biggie-truth.mp3',
+  WRONG: '/audio/biggie-wrong.mp3',
+  CORRECT: '/audio/biggie-correct.mp3',
+  WAITING: '/audio/biggie-waiting.mp3',
+  PRETTY_GIRL: '/audio/biggie-pretty-girl.mp3',
+};
 
 const HINTS = [
   'Three words. Eight letters. One day.',
@@ -53,6 +65,7 @@ export function Room5Lair({ onComplete, onHintUsed }) {
 
   const containerRef = useRef(null);
   const lastMouseMove = useRef(Date.now());
+  const voiceRef = useRef(null);
 
   // Typewriter for current line
   const { displayText, isComplete } = useTypewriter(
@@ -66,8 +79,28 @@ export function Room5Lair({ onComplete, onHintUsed }) {
   useEffect(() => {
     ambient.play();
     setIsVisible(true);
-    return () => ambient.stop();
+    return () => {
+      ambient.stop();
+      voiceRef.current?.stop();
+    };
   }, []);
+
+  // Helper to play Biggie's voice
+  const playVoice = (key) => {
+    voiceRef.current?.stop();
+    voiceRef.current = new Howl({
+      src: [BIGGIE_VOICES[key]],
+      volume: 0.8,
+    });
+    voiceRef.current.play();
+  };
+
+  // Play intro voices
+  useEffect(() => {
+    if (isVisible && !showInput && !showSuccess) {
+      playVoice(`INTRO_${currentLineIndex}`);
+    }
+  }, [currentLineIndex, isVisible]);
 
   // Mouse tracking for dynamic spotlight
   useEffect(() => {
@@ -131,7 +164,7 @@ export function Room5Lair({ onComplete, onHintUsed }) {
     if (isComplete && currentLineIndex < BIGGIE_INTRO.length - 1) {
       const timer = setTimeout(() => {
         setCurrentLineIndex((prev) => prev + 1);
-      }, 1500);
+      }, 2500); // Wait longer for voice to finish
       return () => clearTimeout(timer);
     } else if (isComplete && currentLineIndex === BIGGIE_INTRO.length - 1) {
       const timer = setTimeout(() => {
@@ -158,18 +191,30 @@ export function Room5Lair({ onComplete, onHintUsed }) {
     if (isValid) {
       setShowSuccess(true);
       setSuccessPhase(0);
+      playVoice('CORRECT');
 
-      const timers = [
-        setTimeout(() => setSuccessPhase(1), 2000),
-        setTimeout(() => setSuccessPhase(2), 4000),
-        setTimeout(() => onComplete?.(), 6000),
-      ];
+      const timer1 = setTimeout(() => {
+        setSuccessPhase(1);
+        playVoice('WAITING');
+      }, 5000);
 
-      return () => timers.forEach(clearTimeout);
+      const timer2 = setTimeout(() => {
+        setSuccessPhase(2);
+        playVoice('PRETTY_GIRL');
+      }, 9000);
+
+      const timer3 = setTimeout(() => onComplete?.(), 12000);
+
+      return () => {
+        clearTimeout(timer1);
+        clearTimeout(timer2);
+        clearTimeout(timer3);
+      };
     } else {
       // Intense wrong answer effect
       setScreenFlicker(true);
       setGlitchActive(true);
+      playVoice('WRONG');
       setTimeout(() => {
         setScreenFlicker(false);
         setGlitchActive(false);
@@ -177,7 +222,7 @@ export function Room5Lair({ onComplete, onHintUsed }) {
 
       setWrongMessage("No. That's not when the words were real. Think. Feel. Remember.");
       setShowWrongAnswer(true);
-      setTimeout(() => setShowWrongAnswer(false), 3000);
+      setTimeout(() => setShowWrongAnswer(false), 4000);
       return false;
     }
   }, [onComplete]);

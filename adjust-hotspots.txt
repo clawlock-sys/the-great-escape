@@ -1,0 +1,22 @@
+The office and market look great, but we need to adjust the hotspots and the misdirection based on user feedback.
+
+1. **Hotspot Alignment**: The current positions are a bit off. Use these center-relative positions for better alignment with the `market-overview.png`:
+   - Stall 1 (Front Left): { top: '65%', left: '20%', width: '15%', height: '25%' }
+   - Stall 2 (Mid Left): { top: '58%', left: '32%', width: '10%', height: '20%' }
+   - Stall 3 (Back Left): { top: '50%', left: '40%', width: '8%', height: '16%' }
+   - Stall 4 (Back Center): { top: '50%', left: '50%', width: '10%', height: '18%' }
+   - Stall 5 (Back Right): { top: '50%', left: '60%', width: '10%', height: '18%' }
+   - Stall 6 (Mid Right): { top: '58%', left: '68%', width: '12%', height: '22%' }
+   - Stall 7 (Front Right): { top: '65%', left: '78%', width: '15%', height: '28%' }
+   - *Note: Ensure the hotspots are centered correctly around these points.*
+
+2. **Puzzle Misdirection & Polish**:
+   - The red highlight on the first letter in `StallModal.module.css` is too obvious. Change `.firstLetter` to use a color that blends better with the elegant text, and use a very subtle glow that ONLY appears if the user hovers over the stall name, or make it look like a hand-painted sign detail.
+   - For Stall 7 (Abandoned), make the 'A' much more subtle—perhaps it's carved into the wood or a faint scratch, rather than a giant glowing red letter.
+   - User also wants to ensure the date format is clear in Room 0 (it looks good now with the MM.DD.YYYY prompt and placeholder, just double-check the logic is solid).
+
+3. **Phase 3 (Room 2 - Nash Hunt)**:
+   - Once the Room 1 polish is done, start Phase 3.
+   - Room 2 is the 'Nash Hunt'. I'll provide the SPEC for it once you're ready.
+
+Go!

@@ -1,0 +1,28 @@
+# Adjust Room 2 Hotspots
+
+The background image has a specific isometric layout. Please update the `NASH_PHOTOS`, `FAKE_NASHES`, and `BIGGIE_POSITION` in `src/rooms/Room2Apartment.jsx` with these coordinates to match the visual elements:
+
+## Nash Photos
+- **Nash 1 (Couch):** `{ top: '50%', left: '38%', width: '10%', height: '12%' }` (On the couch cushions)
+- **Nash 2 (Fridge):** `{ top: '28%', left: '44%', width: '8%', height: '18%' }` (The tall white fridge)
+- **Nash 3 (TV):** `{ top: '58%', left: '22%', width: '10%', height: '10%' }` (The TV screen bottom-left)
+- **Nash 4 (Book):** `{ top: '65%', left: '24%', width: '6%', height: '8%' }` (TV stand shelf)
+- **Nash 5 (Table):** `{ top: '78%', left: '45%', width: '12%', height: '10%' }` (Foreground table)
+- **Nash 6 (Closet/Dresser):** `{ top: '50%', left: '68%', width: '10%', height: '15%' }` (Dresser next to bed - assume it's the "closet" for now)
+- **Nash 7 (Decoy/Shower):** `{ top: '20%', left: '55%', width: '10%', height: '10%' }` (Kitchen cabinets - since no shower is visible)
+- **Nash 8 (Mirror):** `{ top: '38%', left: '71%', width: '8%', height: '12%' }` (Circular mirror on wall)
+
+## Fakes
+- **Fake 1:** `{ top: '65%', left: '62%', width: '8%', height: '8%' }` (Rug near bed)
+- **Fake 2:** `{ top: '42%', left: '52%', width: '8%', height: '10%' }` (Kitchen table)
+- **Fake 3:** `{ top: '30%', left: '28%', width: '10%', height: '15%' }` (Window)
+
+## Biggie
+- **Biggie:** `{ top: '62%', left: '75%', width: '10%', height: '12%' }` (On the bed)
+
+## Hint Updates
+Since some locations changed slightly (e.g. Shower -> Cabinets), update the hints in the `NASH_PHOTOS` array:
+- Nash 6: "In the dresser drawer" (instead of closet)
+- Nash 7: "In the kitchen cabinets" (instead of shower)
+
+Go!

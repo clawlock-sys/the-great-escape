@@ -5,32 +5,18 @@ import { useAudio } from '../hooks/useAudio';
 import { validate } from '../utils/solutions';
 import styles from '../styles/Room3.module.css';
 
-// Letters for the puzzle: FEBRUARY EIGHTH (their first date) + decoys (O, C, N)
+// Letters for the puzzle: FEBRUARY EIGHTH (14 letters)
 const SOLUTION_LETTERS = ['F', 'E', 'B', 'R', 'U', 'A', 'R', 'Y', 'E', 'I', 'G', 'H', 'T', 'H'];
 const DECOY_LETTERS = ['O', 'C', 'N'];
-const ALL_LETTERS = [...SOLUTION_LETTERS, ...DECOY_LETTERS];
 
-// Shuffle array helper
-const shuffleArray = (array) => {
-  const shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
+// Letter groups to unlock
+const GROUPS = {
+  RECEIPT: ['F', 'E', 'B', 'R', 'U'],
+  WINE: ['A', 'R', 'Y', 'E', 'I'],
+  MENU: ['G', 'H', 'T', 'H'],
 };
 
-// Create initial tiles with unique IDs
-const createInitialTiles = () => {
-  const shuffled = shuffleArray(ALL_LETTERS);
-  return shuffled.map((letter, index) => ({
-    id: `tile-${index}`,
-    letter,
-    inSlot: null, // null = on table, number = slot index
-  }));
-};
-
-// Hotspot positions for misdirections
+// Hotspot positions
 const HOTSPOTS = {
   menu: { top: '35%', left: '25%', width: '12%', height: '15%' },
   wine: { top: '30%', left: '55%', width: '8%', height: '20%' },
@@ -40,26 +26,33 @@ const HOTSPOTS = {
 };
 
 const HINTS = [
-  'The tiles remember a day. Not a place.',
-  'When did you first sit across from each other here?',
+  'Check the receipt, the wine label, and the menu. Each has a secret to reveal.',
+  'Receipt: Add the table number to the price of dessert. Wine: Add the roses and lilies.',
   'Unscramble: FEBRUARY EIGHTH — your first date.',
 ];
 
 export function Room3Restaurant({ onComplete, onHintUsed }) {
-  // Initialize tiles with useMemo to avoid re-shuffle on re-render
-  const initialTiles = useMemo(() => createInitialTiles(), []);
-
-  const [tiles, setTiles] = useState(initialTiles);
+  const [unlockedGroups, setUnlockedGroups] = useState({
+    RECEIPT: false,
+    WINE: false,
+    MENU: false,
+  });
+  
+  const [tiles, setTiles] = useState([]);
   const [selectedTileId, setSelectedTileId] = useState(null);
   const [showModal, setShowModal] = useState(null);
   const [showWrongAnswer, setShowWrongAnswer] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [debugMode, setDebugMode] = useState(false);
   const [candleFlicker, setCandleFlicker] = useState(false);
   const [showBreadstickMsg, setShowBreadstickMsg] = useState(false);
+  const [debugMode, setDebugMode] = useState(false);
 
-  // Audio
+  // Puzzle inputs
+  const [receiptInput, setReceiptInput] = useState('');
+  const [wineInput, setWineInput] = useState('');
+  const [menuInput, setMenuInput] = useState('');
+
   const ambient = useAudio('/audio/ambient-jazz.mp3', { loop: true, volume: 0.25 });
 
   useEffect(() => {
@@ -68,24 +61,31 @@ export function Room3Restaurant({ onComplete, onHintUsed }) {
     return () => ambient.stop();
   }, []);
 
-  // Get tiles currently in answer slots (sorted by slot index)
-  const getAnswerWord = useCallback(() => {
-    const slotTiles = tiles
-      .filter((t) => t.inSlot !== null)
-      .sort((a, b) => a.inSlot - b.inSlot);
-    return slotTiles.map((t) => t.letter).join('');
-  }, [tiles]);
+  // When a group is unlocked, add its letters to the table
+  useEffect(() => {
+    let newLetters = [];
+    if (unlockedGroups.RECEIPT) newLetters = [...newLetters, ...GROUPS.RECEIPT];
+    if (unlockedGroups.WINE) newLetters = [...newLetters, ...GROUPS.WINE];
+    if (unlockedGroups.MENU) newLetters = [...newLetters, ...GROUPS.MENU];
+    
+    // Add decoys if everything is unlocked
+    if (unlockedGroups.RECEIPT && unlockedGroups.WINE && unlockedGroups.MENU) {
+      newLetters = [...newLetters, ...DECOY_LETTERS];
+    }
 
-  // Handle tile click
+    setTiles(newLetters.map((letter, index) => ({
+      id: `tile-${letter}-${index}`,
+      letter,
+      inSlot: null,
+    })));
+  }, [unlockedGroups]);
+
   const handleTileClick = useCallback((tileId) => {
     if (selectedTileId === null) {
-      // Select this tile
       setSelectedTileId(tileId);
     } else if (selectedTileId === tileId) {
-      // Deselect
       setSelectedTileId(null);
     } else {
-      // Swap the two tiles' positions
       setTiles((prev) => {
         const newTiles = [...prev];
         const tile1 = newTiles.find((t) => t.id === selectedTileId);
@@ -101,14 +101,10 @@ export function Room3Restaurant({ onComplete, onHintUsed }) {
     }
   }, [selectedTileId]);
 
-  // Handle clicking an empty answer slot
   const handleSlotClick = useCallback((slotIndex) => {
     if (selectedTileId === null) return;
-
-    // Check if slot is already occupied
     const occupyingTile = tiles.find((t) => t.inSlot === slotIndex);
     if (occupyingTile) {
-      // Swap: selected tile goes to slot, occupying tile goes to selected's old position
       setTiles((prev) => {
         const newTiles = [...prev];
         const selectedTile = newTiles.find((t) => t.id === selectedTileId);
@@ -121,7 +117,6 @@ export function Room3Restaurant({ onComplete, onHintUsed }) {
         return newTiles;
       });
     } else {
-      // Move selected tile to empty slot
       setTiles((prev) =>
         prev.map((t) =>
           t.id === selectedTileId ? { ...t, inSlot: slotIndex } : t
@@ -131,12 +126,13 @@ export function Room3Restaurant({ onComplete, onHintUsed }) {
     setSelectedTileId(null);
   }, [selectedTileId, tiles]);
 
-  // Handle submit
   const handleSubmit = useCallback(() => {
-    const answer = getAnswerWord();
-    const isValid = validate(3, answer);
-
-    if (isValid) {
+    const slotTiles = tiles
+      .filter((t) => t.inSlot !== null)
+      .sort((a, b) => a.inSlot - b.inSlot);
+    const answer = slotTiles.map((t) => t.letter).join('');
+    
+    if (validate(3, answer)) {
       onComplete?.();
     } else {
       setShowWrongAnswer(true);
@@ -146,36 +142,44 @@ export function Room3Restaurant({ onComplete, onHintUsed }) {
         setIsShaking(false);
       }, 2000);
     }
-  }, [getAnswerWord, onComplete]);
+  }, [tiles, onComplete]);
 
-  const handleHintUsed = useCallback((roomId, level) => {
-    onHintUsed?.(roomId, level);
-  }, [onHintUsed]);
-
-  // Misdirection handlers
-  const handleCandleClick = () => {
-    setCandleFlicker(true);
-    setTimeout(() => setCandleFlicker(false), 500);
+  // Puzzle validation logic
+  const checkReceiptPuzzle = () => {
+    if (receiptInput === '21') {
+      setUnlockedGroups(prev => ({ ...prev, RECEIPT: true }));
+      setShowModal(null);
+    } else {
+      setIsShaking(true);
+      setTimeout(() => setIsShaking(false), 500);
+    }
   };
 
-  const handleBreadsticksClick = () => {
-    setShowBreadstickMsg(true);
-    setTimeout(() => setShowBreadstickMsg(false), 2000);
+  const checkWinePuzzle = () => {
+    if (wineInput === '10') {
+      setUnlockedGroups(prev => ({ ...prev, WINE: true }));
+      setShowModal(null);
+    } else {
+      setIsShaking(true);
+      setTimeout(() => setIsShaking(false), 500);
+    }
   };
 
-  // Tiles on table (not in slots)
-  const tableTiles = tiles.filter((t) => t.inSlot === null);
+  const checkMenuPuzzle = () => {
+    if (menuInput === '4') {
+      setUnlockedGroups(prev => ({ ...prev, MENU: true }));
+      setShowModal(null);
+    } else {
+      setIsShaking(true);
+      setTimeout(() => setIsShaking(false), 500);
+    }
+  };
 
-  // Create array of 14 slots (FEBRUARY EIGHTH = 14 letters)
-  const answerSlots = Array.from({ length: 14 }, (_, i) => {
-    const tileInSlot = tiles.find((t) => t.inSlot === i);
-    return { index: i, tile: tileInSlot };
-  });
+  const allUnlocked = unlockedGroups.RECEIPT && unlockedGroups.WINE && unlockedGroups.MENU;
 
   return (
     <Transition isVisible={isVisible}>
       <div className={styles.room3}>
-        {/* Candlelit overlay */}
         <div className={`${styles.candleOverlay} ${candleFlicker ? styles.flicker : ''}`} />
 
         {/* Debug toggle */}
@@ -183,122 +187,161 @@ export function Room3Restaurant({ onComplete, onHintUsed }) {
           {debugMode ? 'Hide' : 'Debug'}
         </button>
 
-        {/* Misdirection hotspots */}
+        {/* Clickable Objects */}
         <div
           className={`${styles.hotspot} ${debugMode ? styles.hotspotDebug : ''}`}
           style={HOTSPOTS.menu}
           onClick={() => setShowModal('menu')}
-          title={debugMode ? 'Menu' : ''}
         >
           {debugMode && <span className={styles.hotspotLabel}>Menu</span>}
         </div>
-
         <div
           className={`${styles.hotspot} ${debugMode ? styles.hotspotDebug : ''}`}
           style={HOTSPOTS.wine}
           onClick={() => setShowModal('wine')}
-          title={debugMode ? 'Wine' : ''}
         >
           {debugMode && <span className={styles.hotspotLabel}>Wine</span>}
         </div>
-
         <div
           className={`${styles.hotspot} ${debugMode ? styles.hotspotDebug : ''}`}
           style={HOTSPOTS.receipt}
           onClick={() => setShowModal('receipt')}
-          title={debugMode ? 'Receipt' : ''}
         >
           {debugMode && <span className={styles.hotspotLabel}>Receipt</span>}
         </div>
-
         <div
           className={`${styles.hotspot} ${debugMode ? styles.hotspotDebug : ''}`}
           style={HOTSPOTS.candle}
-          onClick={handleCandleClick}
-          title={debugMode ? 'Candle' : ''}
+          onClick={() => setCandleFlicker(true)}
         >
           {debugMode && <span className={styles.hotspotLabel}>Candle</span>}
         </div>
-
         <div
           className={`${styles.hotspot} ${debugMode ? styles.hotspotDebug : ''}`}
           style={HOTSPOTS.breadsticks}
-          onClick={handleBreadsticksClick}
-          title={debugMode ? 'Bread' : ''}
+          onClick={() => setShowBreadstickMsg(true)}
         >
           {debugMode && <span className={styles.hotspotLabel}>Bread</span>}
         </div>
 
-        {/* Breadstick message */}
         {showBreadstickMsg && (
-          <div className={styles.breadstickMsg}>
-            Just breadsticks. Delicious, but not helpful.
+          <div className={styles.breadstickMsg} onAnimationEnd={() => setShowBreadstickMsg(false)}>
+            "Just breadsticks. Delicious, but not helpful."
           </div>
         )}
 
-        {/* Tile area - scattered on table */}
+        {/* Table Area for Tiles */}
         <div className={styles.tileArea}>
-          {tableTiles.map((tile) => (
-            <div
-              key={tile.id}
-              className={`${styles.tile} ${
-                selectedTileId === tile.id ? styles.tileSelected : ''
-              } ${isShaking ? styles.tileShake : ''}`}
-              onClick={() => handleTileClick(tile.id)}
-            >
-              {tile.letter}
-            </div>
-          ))}
-        </div>
-
-        {/* Answer slots */}
-        <div className={styles.answerArea}>
-          <div className={styles.answerSlots}>
-            {answerSlots.map(({ index, tile }) => (
+          {allUnlocked ? (
+            tiles.filter(t => t.inSlot === null).map((tile) => (
               <div
-                key={index}
-                className={`${styles.answerSlot} ${
-                  tile ? styles.answerSlotFilled : ''
-                } ${isShaking && tile ? styles.tileShake : ''}`}
-                onClick={() => (tile ? handleTileClick(tile.id) : handleSlotClick(index))}
+                key={tile.id}
+                className={`${styles.tile} ${selectedTileId === tile.id ? styles.tileSelected : ''} ${isShaking ? styles.tileShake : ''}`}
+                onClick={() => handleTileClick(tile.id)}
               >
-                {tile && (
-                  <span
-                    className={`${styles.slotLetter} ${
-                      selectedTileId === tile.id ? styles.tileSelected : ''
-                    }`}
-                  >
-                    {tile.letter}
-                  </span>
-                )}
+                {tile.letter}
               </div>
-            ))}
-          </div>
-          <button className={styles.submitButton} onClick={handleSubmit}>
-            Check Answer
-          </button>
+            ))
+          ) : (
+            <div className={styles.lockedMessage}>
+              <p>The table is empty. Find the clues in the room.</p>
+              <div className={styles.progress}>
+                <span className={unlockedGroups.RECEIPT ? styles.unlocked : ''}>Receipt 📝</span>
+                <span className={unlockedGroups.WINE ? styles.unlocked : ''}>Wine 🍷</span>
+                <span className={unlockedGroups.MENU ? styles.unlocked : ''}>Menu 🍴</span>
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Bottom panel */}
+        {/* Answer Slots */}
+        {allUnlocked && (
+          <div className={styles.answerArea}>
+            <div className={styles.answerSlots}>
+              {Array.from({ length: 14 }).map((_, i) => {
+                const tile = tiles.find((t) => t.inSlot === i);
+                return (
+                  <div
+                    key={i}
+                    className={`${styles.answerSlot} ${tile ? styles.answerSlotFilled : ''}`}
+                    onClick={() => (tile ? handleTileClick(tile.id) : handleSlotClick(i))}
+                  >
+                    {tile && <span className={styles.slotLetter}>{tile.letter}</span>}
+                  </div>
+                );
+              })}
+            </div>
+            <button className={styles.submitButton} onClick={handleSubmit}>Check Answer</button>
+          </div>
+        )}
+
         <div className={styles.bottomPanel}>
-          <p className={styles.prompt}>
-            "Unscramble the tiles. Remember the day."
-          </p>
+          <p className={styles.prompt}>"The perfect evening is hidden in the details."</p>
           <div className={styles.controls}>
-            <HintButton hints={HINTS} onHintUsed={handleHintUsed} roomId={3} />
-            {showWrongAnswer && (
-              <p className={styles.wrongAnswer}>That's not right...</p>
-            )}
+            <HintButton hints={HINTS} onHintUsed={onHintUsed} roomId={3} />
+            {showWrongAnswer && <p className={styles.wrongAnswer}>That's not right...</p>}
           </div>
         </div>
 
-        {/* Modals */}
+        {/* Modals for Puzzles */}
         {showModal && (
           <div className={styles.modalOverlay} onClick={() => setShowModal(null)}>
             <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-              <button className={styles.closeButton} onClick={() => setShowModal(null)}>
-                ×
-              </button>
+              <button className={styles.closeButton} onClick={() => setShowModal(null)}>×</button>
+
+              {showModal === 'receipt' && (
+                <div className={styles.receiptModal}>
+                  <h2>RISTORANTE ILANDO</h2>
+                  <div className={styles.receiptLine} />
+                  <p>Table: 7</p>
+                  <p>Server: Valentina</p>
+                  <p>Bruschetta: $12</p>
+                  <p>Risotto: $24</p>
+                  <p>Tiramisu: $14</p>
+                  <div className={styles.receiptLine} />
+                  {unlockedGroups.RECEIPT ? (
+                    <p className={styles.unlockedText}>✔ Clue Found!</p>
+                  ) : (
+                    <div className={styles.puzzleInput}>
+                      <p>Enter Sum of Table # and Price of Dessert:</p>
+                      <input 
+                        type="number" 
+                        value={receiptInput} 
+                        onChange={(e) => setReceiptInput(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && checkReceiptPuzzle()}
+                        autoFocus
+                      />
+                      <button onClick={checkReceiptPuzzle}>Unlock</button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {showModal === 'wine' && (
+                <div className={styles.wineModal}>
+                  <div className={styles.wineLabel}>
+                    <h2>CASA DEL CUORE</h2>
+                    <p className={styles.wineYear}>Reserve 2024</p>
+                    <p>"Two roses. Eight lilies."</p>
+                    <p className={styles.wineRegion}>San Diego Valley</p>
+                  </div>
+                  {unlockedGroups.WINE ? (
+                    <p className={styles.unlockedText}>✔ Clue Found!</p>
+                  ) : (
+                    <div className={styles.puzzleInput}>
+                      <p>Enter the total number of flowers:</p>
+                      <input 
+                        type="number" 
+                        value={wineInput} 
+                        onChange={(e) => setWineInput(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && checkWinePuzzle()}
+                        autoFocus
+                      />
+                      <button onClick={checkWinePuzzle}>Unlock</button>
+                    </div>
+                  )}
+                </div>
+              )}
 
               {showModal === 'menu' && (
                 <div className={styles.menuModal}>
@@ -319,30 +362,21 @@ export function Room3Restaurant({ onComplete, onHintUsed }) {
                     <h3>DOLCI</h3>
                     <p>• Tiramisu Classico</p>
                   </div>
-                </div>
-              )}
-
-              {showModal === 'wine' && (
-                <div className={styles.wineModal}>
-                  <div className={styles.wineLabel}>
-                    <h2>CASA DEL CUORE</h2>
-                    <p className={styles.wineYear}>Reserve 2024</p>
-                    <p className={styles.wineRegion}>San Diego Valley</p>
-                  </div>
-                </div>
-              )}
-
-              {showModal === 'receipt' && (
-                <div className={styles.receiptModal}>
-                  <h2>RISTORANTE ILANDO</h2>
-                  <div className={styles.receiptLine} />
-                  <p>Table: 7</p>
-                  <p>Server: Valentina</p>
-                  <p>Date: ██/██/████</p>
-                  <div className={styles.receiptLine} />
-                  <p className={styles.receiptNote}>
-                    "The perfect evening is spelled out on the table."
-                  </p>
+                  {unlockedGroups.MENU ? (
+                    <p className={styles.unlockedText}>✔ Clue Found!</p>
+                  ) : (
+                    <div className={styles.puzzleInput}>
+                      <p>How many menu sections are listed?</p>
+                      <input 
+                        type="number" 
+                        value={menuInput} 
+                        onChange={(e) => setMenuInput(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && checkMenuPuzzle()}
+                        autoFocus
+                      />
+                      <button onClick={checkMenuPuzzle}>Unlock</button>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

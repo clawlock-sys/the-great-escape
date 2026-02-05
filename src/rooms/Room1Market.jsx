@@ -35,7 +35,7 @@ const STALLS = [
   {
     id: 4,
     name: 'Terra Fruits',
-    items: 'Apples, Pears',
+    items: 'Plums, Pomegranates',
     image: '/assets/room1/stalls/terra-fruits.png',
     // Back Center - up and left
     position: { top: '38%', left: '46%', width: '10%', height: '18%' },
