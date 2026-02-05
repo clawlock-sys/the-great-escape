@@ -1,0 +1,10 @@
+{
+  "run_id": "0002-shared-components",
+  "run_dir": ".darwin/runs/0002-shared-components",
+  "description": "Pointer to the most recent DARWIN run",
+  "phase": "COMPLETE",
+  "spec_status": "READY",
+  "feature_request_path": ".darwin/runs/0002-shared-components/_meta/feature-request.md",
+  "spec_path": ".darwin/runs/0002-shared-components/consolidated/spec.md",
+  "verdict": "VERIFIED"
+}

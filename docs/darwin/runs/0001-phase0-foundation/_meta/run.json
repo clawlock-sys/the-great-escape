@@ -1,0 +1,17 @@
+{
+  "run_id": "0001-phase0-foundation",
+  "feature": "Phase 0 - Escape Room Foundation",
+  "mode": "single",
+  "created_at": "2026-02-04T22:44:00Z",
+  "phase": "ORCHESTRATION",
+  "code_root": "src/",
+  "constraints": [
+    "C-001: Use React 18+ with Vite",
+    "C-002: CSS Modules + CSS Variables",
+    "C-003: Howler.js for audio",
+    "C-004: Persist state to localStorage",
+    "C-005: Block mobile user agents",
+    "C-006: Obfuscate solutions (base64)",
+    "C-007: Support 7 rooms (0-6)"
+  ]
+}

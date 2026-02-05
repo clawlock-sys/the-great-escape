@@ -1,0 +1,192 @@
+/* src/styles/components.module.css */
+/* Shared component styles using CSS variables from variables.css */
+
+/* ===== TextInput ===== */
+.textInput {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--warm-text);
+  background-color: transparent;
+  border: 2px solid var(--warm-accent);
+  border-radius: 8px;
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.textInput:focus {
+  border-color: var(--moody-accent);
+  box-shadow: 0 0 0 3px var(--creepy-glow);
+}
+
+.textInput::placeholder {
+  color: var(--moody-text);
+  opacity: 0.6;
+}
+
+.textInputError {
+  border-color: var(--eerie-text);
+  box-shadow: 0 0 0 3px var(--eerie-glow);
+}
+
+.textInputSuccess {
+  border-color: var(--moody-accent);
+  box-shadow: 0 0 8px var(--moody-accent);
+}
+
+/* ===== HintButton ===== */
+.hintButton {
+  padding: 0.5rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--warm-text);
+  background-color: var(--warm-accent);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.hintButton:hover:not(:disabled) {
+  background-color: var(--moody-accent);
+  transform: scale(1.02);
+}
+
+.hintButtonDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hintContent {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--moody-text);
+  background-color: var(--moody-bg);
+  border-radius: 6px;
+  border-left: 3px solid var(--moody-accent);
+}
+
+/* ===== ClickableArea ===== */
+.area {
+  position: absolute;
+  cursor: pointer;
+  background-color: transparent;
+  border: 2px dashed transparent;
+  border-radius: 4px;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.area:hover {
+  border-color: var(--warm-accent);
+  background-color: var(--creepy-glow);
+}
+
+.areaFound {
+  border-color: var(--moody-accent);
+  background-color: var(--creepy-glow);
+}
+
+.areaFound::after {
+  content: '\2713';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5rem;
+  color: var(--moody-accent);
+}
+
+/* ===== RunawayButton ===== */
+.runaway {
+  position: absolute;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-creepy);
+  color: var(--eerie-text);
+  background-color: var(--eerie-bg);
+  border: 2px solid var(--eerie-text);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform var(--transition-fast), font-size var(--transition-fast);
+  white-space: nowrap;
+}
+
+.runaway:hover {
+  background-color: var(--creepy-bg);
+}
+
+/* ===== Transition ===== */
+.transition {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity var(--transition-slow), transform var(--transition-slow);
+}
+
+.transitionEnter {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.transitionExit {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* ===== ComponentDemo ===== */
+.demo {
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: var(--font-body);
+  color: var(--warm-text);
+  background-color: var(--warm-bg);
+}
+
+.demoSection {
+  margin-bottom: 3rem;
+  padding: 1.5rem;
+  background-color: var(--moody-bg);
+  border-radius: 12px;
+}
+
+.demoSection h2 {
+  margin-bottom: 1rem;
+  font-family: var(--font-elegant);
+  color: var(--finale-accent);
+}
+
+.demoContainer {
+  position: relative;
+  width: 400px;
+  height: 300px;
+  background-color: var(--creepy-bg);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.themeSelector {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.themeButton {
+  padding: 0.5rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--warm-text);
+  background-color: var(--warm-accent);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.themeButton:hover {
+  background-color: var(--moody-accent);
+}
+
+.themeButtonActive {
+  background-color: var(--moody-accent);
+}

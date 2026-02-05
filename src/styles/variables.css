@@ -1,0 +1,35 @@
+/* src/styles/variables.css */
+:root {
+  /* Room 0-1: Creepy */
+  --creepy-bg: #0a0a0f;
+  --creepy-text: #8b0000;
+  --creepy-glow: rgba(139, 0, 0, 0.3);
+
+  /* Room 2-3: Warmer */
+  --warm-bg: #1a1a2e;
+  --warm-text: #eee;
+  --warm-accent: #e94560;
+
+  /* Room 4: Moody */
+  --moody-bg: #16213e;
+  --moody-text: #a5b4fc;
+  --moody-accent: #7c3aed;
+
+  /* Room 5: Eerie */
+  --eerie-bg: #0f0f0f;
+  --eerie-text: #ff4444;
+  --eerie-glow: rgba(255, 0, 0, 0.2);
+
+  /* Room 6: Celebration */
+  --finale-bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  --finale-text: #fff;
+  --finale-accent: #f472b6;
+
+  /* Common */
+  --font-creepy: 'Creepster', cursive;
+  --font-elegant: 'Playfair Display', serif;
+  --font-body: 'Inter', sans-serif;
+
+  --transition-slow: 0.5s ease;
+  --transition-fast: 0.2s ease;
+}

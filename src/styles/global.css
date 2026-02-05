@@ -1,0 +1,52 @@
+/* src/styles/global.css */
+@import './variables.css';
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--creepy-bg);
+  color: var(--creepy-text);
+  overflow: hidden;
+}
+
+.mobile-blocker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  padding: 2rem;
+  background: var(--creepy-bg);
+  color: var(--creepy-text);
+}
+
+.mobile-blocker h1 {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.mobile-blocker p {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+}
