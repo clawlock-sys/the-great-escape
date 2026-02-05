@@ -30,6 +30,11 @@
   --font-elegant: 'Playfair Display', serif;
   --font-body: 'Inter', sans-serif;
 
-  --transition-slow: 0.5s ease;
-  --transition-fast: 0.2s ease;
+  /* Transitions - premium easing curves */
+  --transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-premium: 0.5s cubic-bezier(0.16, 1, 0.3, 1); /* Expo out */
+  --transition-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --easing-premium: cubic-bezier(0.16, 1, 0.3, 1);
+  --easing-smooth: cubic-bezier(0.4, 0, 0.2, 1);
 }

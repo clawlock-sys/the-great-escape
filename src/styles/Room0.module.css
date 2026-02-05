@@ -93,7 +93,7 @@
   text-shadow: 0 0 10px rgba(139, 0, 0, 0.3);
 }
 
-/* Blinking cursor */
+/* Blinking cursor - smoother pulse */
 .cursor {
   display: inline-block;
   width: 2px;
@@ -101,12 +101,12 @@
   background-color: var(--creepy-text);
   margin-left: 2px;
   vertical-align: text-bottom;
-  animation: blink 0.7s infinite;
+  animation: cursorPulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-@keyframes blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
+@keyframes cursorPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
 }
 
 .inputContainer {
@@ -117,6 +117,18 @@
   gap: 1rem;
   position: relative;
   z-index: 20;
+  animation: inputReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes inputReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .flicker {

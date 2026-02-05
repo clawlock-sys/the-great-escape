@@ -125,13 +125,13 @@ function App() {
         nextRoom();
       }
     } else {
-      // Simple text transition
+      // Simple text transition - 3.5s feels more responsive
       const timer = setTimeout(() => {
         setShowTransition(false);
         setTransitionConfig(null);
         setTransitionPhase(0);
         nextRoom();
-      }, 4000);
+      }, 3500);
       return () => clearTimeout(timer);
     }
   }, [showTransition, transitionPhase, transitionConfig]);

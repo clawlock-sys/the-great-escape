@@ -159,7 +159,7 @@ export function Room6Finale({ onComplete }) {
         {/* Intro text */}
         {!showQuestion && (
           <div className={styles.introContainer}>
-            <p className={styles.introText}>
+            <p key={currentLineIndex} className={styles.introText}>
               {displayText}
               {!isComplete && <span className={styles.cursor}>|</span>}
             </p>

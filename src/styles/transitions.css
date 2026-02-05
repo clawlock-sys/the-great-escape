@@ -91,7 +91,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  animation: fadeIn 1s ease-out;
+  animation: fadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .transition-market-sign {
@@ -100,17 +100,17 @@
   width: auto;
   height: auto;
   filter: drop-shadow(0 8px 32px rgba(0, 0, 0, 0.8));
-  animation: signFadeIn 2s ease-out;
+  animation: signFadeIn 2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes signFadeIn {
   0% {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.92) translateY(10px);
   }
   100% {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) translateY(0);
   }
 }
 
@@ -137,26 +137,30 @@
   line-height: 1.8;
   font-style: italic;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  animation: textFadeIn 1s ease-out;
+  animation: textFadeIn 1.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes textFadeIn {
   0% {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(25px);
+    letter-spacing: 0.05em;
   }
   100% {
     opacity: 1;
     transform: translateY(0);
+    letter-spacing: 0;
   }
 }
 
 @keyframes fadeIn {
   0% {
     opacity: 0;
+    filter: blur(4px);
   }
   100% {
     opacity: 1;
+    filter: blur(0);
   }
 }
 
