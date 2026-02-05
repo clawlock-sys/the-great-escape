@@ -16,14 +16,14 @@ const BIGGIE_INTRO = [
 ];
 
 const BIGGIE_VOICES = {
-  INTRO_0: '/audio/biggie-found.mp3',
-  INTRO_1: '/audio/biggie-watching.mp3',
-  INTRO_2: '/audio/biggie-keeper.mp3',
-  INTRO_3: '/audio/biggie-truth.mp3',
-  WRONG: '/audio/biggie-wrong.mp3',
-  CORRECT: '/audio/biggie-correct.mp3',
-  WAITING: '/audio/biggie-waiting.mp3',
-  PRETTY_GIRL: '/audio/biggie-pretty-girl.mp3',
+  INTRO_0: `${import.meta.env.BASE_URL}audio/biggie-found.mp3`,
+  INTRO_1: `${import.meta.env.BASE_URL}audio/biggie-watching.mp3`,
+  INTRO_2: `${import.meta.env.BASE_URL}audio/biggie-keeper.mp3`,
+  INTRO_3: `${import.meta.env.BASE_URL}audio/biggie-truth.mp3`,
+  WRONG: `${import.meta.env.BASE_URL}audio/biggie-wrong.mp3`,
+  CORRECT: `${import.meta.env.BASE_URL}audio/biggie-correct.mp3`,
+  WAITING: `${import.meta.env.BASE_URL}audio/biggie-waiting.mp3`,
+  PRETTY_GIRL: `${import.meta.env.BASE_URL}audio/biggie-pretty-girl.mp3`,
 };
 
 const HINTS = [

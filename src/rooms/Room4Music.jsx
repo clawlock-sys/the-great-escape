@@ -54,11 +54,11 @@ const VINYL_RIDDLE = [
 // ═══════════════════════════════════════════
 
 const FINAL_RECORDS = [
-  { id: 'largest', title: 'The Largest', artist: 'BigXDaPlug', color: '#dc2626', audio: '/audio/bigx-clip.mp3' },
-  { id: 'gracie', title: "I Love You, I'm Sorry", artist: 'Gracie Abrams', color: '#86efac', audio: '/audio/gracie-abrams-clip.mp3' },
-  { id: 'sombr', title: 'back to friends', artist: 'sombr', color: '#f59e0b', audio: '/audio/sombr-clip.mp3' },
-  { id: 'vienna', title: 'Vienna', artist: 'Billy Joel', color: '#60a5fa', audio: '/audio/billy-joel-clip.mp3' },
-  { id: 'laufey', title: 'Valentine', artist: 'Laufey', color: '#f472b6', audio: '/audio/laufey-clip.mp3' },
+  { id: 'largest', title: 'The Largest', artist: 'BigXDaPlug', color: '#dc2626', audio: `${import.meta.env.BASE_URL}audio/bigx-clip.mp3` },
+  { id: 'gracie', title: "I Love You, I'm Sorry", artist: 'Gracie Abrams', color: '#86efac', audio: `${import.meta.env.BASE_URL}audio/gracie-abrams-clip.mp3` },
+  { id: 'sombr', title: 'back to friends', artist: 'sombr', color: '#f59e0b', audio: `${import.meta.env.BASE_URL}audio/sombr-clip.mp3` },
+  { id: 'vienna', title: 'Vienna', artist: 'Billy Joel', color: '#60a5fa', audio: `${import.meta.env.BASE_URL}audio/billy-joel-clip.mp3` },
+  { id: 'laufey', title: 'Valentine', artist: 'Laufey', color: '#f472b6', audio: `${import.meta.env.BASE_URL}audio/laufey-clip.mp3` },
 ];
 
 const HINTS = [
