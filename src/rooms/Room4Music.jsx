@@ -592,7 +592,7 @@ export function Room4Music({ onComplete, onHintUsed }) {
           <div className={styles.overlay}>
             <div className={`${styles.overlayContent} ${styles.playerOverlay}`}>
               <h2 className={styles.playerTitle}>Choose a Record</h2>
-              <p className={styles.playerPrompt}>Three records recovered. Which one holds the memory?</p>
+              <p className={styles.playerPrompt}>Five records. Which one summons her...?</p>
               <div className={styles.finalRecords}>
                 {FINAL_RECORDS.map((r) => (
                   <div key={r.id} className={styles.finalCard} onClick={() => handleRecordSelect(r)}>
@@ -638,7 +638,7 @@ export function Room4Music({ onComplete, onHintUsed }) {
             {success
               ? ''
               : allRecordsFound
-                ? '"Three records found. One holds the memory..."'
+                ? '"Five records. Which one summons her...?"'
                 : '"Finally some peace and quiet. Can I get you a Drink?"'}
           </p>
           <div className={styles.controls}>
