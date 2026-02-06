@@ -302,10 +302,14 @@ export function Room5Lair({ onComplete, onHintUsed }) {
                 e.target.src = `${import.meta.env.BASE_URL}images/biggie/biggie-silhouette.svg`;
               }}
             />
-            {/* Clickable eyes for jumpscare */}
+            {/* Clickable eyes that follow cursor */}
             <div
               className={`${styles.biggieEyes} ${eyesGlowing ? styles.eyesGlowing : ''}`}
               onClick={handleEyeClick}
+              style={{
+                '--eye-x': `${(mousePos.x - 50) * 0.15}px`,
+                '--eye-y': `${(mousePos.y - 50) * 0.1}px`,
+              }}
             />
           </div>
           <div className={styles.biggieGlow} />
@@ -360,14 +364,15 @@ export function Room5Lair({ onComplete, onHintUsed }) {
 
         {/* Ambient particles */}
         <div className={styles.particles}>
-          {[...Array(20)].map((_, i) => (
+          {[...Array(60)].map((_, i) => (
             <div
               key={i}
               className={styles.particle}
               style={{
-                '--delay': `${i * 0.5}s`,
+                '--delay': `${i * 0.2}s`,
                 '--x': `${Math.random() * 100}%`,
-                '--duration': `${8 + Math.random() * 4}s`,
+                '--duration': `${6 + Math.random() * 5}s`,
+                '--size': `${2 + Math.random() * 3}px`,
               }}
             />
           ))}
