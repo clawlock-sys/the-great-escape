@@ -639,7 +639,7 @@ export function Room4Music({ onComplete, onHintUsed }) {
               ? ''
               : allRecordsFound
                 ? '"Three records found. One holds the memory..."'
-                : '"Every record tells a story. Find all three to unlock the truth."'}
+                : '"Finally some peace and quiet. Can I get you a Drink?"'}
           </p>
           <div className={styles.controls}>
             <HintButton hints={HINTS} onHintUsed={handleHintUsed} roomId={4} />
