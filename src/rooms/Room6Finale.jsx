@@ -175,17 +175,19 @@ export function Room6Finale({ onComplete }) {
                 YES
               </button>
 
-              <button
-                ref={noButtonRef}
-                className={styles.noButton}
-                style={{
-                  transform: `translate(${noButtonPos.x}px, ${noButtonPos.y}px) scale(${noButtonSize})`,
-                }}
-                onMouseEnter={handleNoButtonHover}
-                onClick={handleNoClick}
-              >
-                {getNoButtonText()}
-              </button>
+              {noButtonSize > 0.01 && (
+                <button
+                  ref={noButtonRef}
+                  className={styles.noButton}
+                  style={{
+                    transform: `translate(${noButtonPos.x}px, ${noButtonPos.y}px) scale(${noButtonSize})`,
+                  }}
+                  onMouseEnter={handleNoButtonHover}
+                  onClick={handleNoClick}
+                >
+                  {getNoButtonText()}
+                </button>
+              )}
             </div>
 
             {keyboardNo && (
