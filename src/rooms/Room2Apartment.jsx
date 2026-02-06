@@ -186,7 +186,6 @@ export function Room2Apartment({ onComplete, onHintUsed }) {
   const [foundNashes, setFoundNashes] = useState(new Set());
   const [showModal, setShowModal] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [debugMode, setDebugMode] = useState(false);
 
   // Window lock puzzle state
   const [showWindowZoom, setShowWindowZoom] = useState(false);
@@ -306,7 +305,7 @@ export function Room2Apartment({ onComplete, onHintUsed }) {
               return (
                 <div
                   key={zone.id}
-                  className={`${styles.zoneSelector} ${debugMode ? styles.hotspotDebug : ''}`}
+                  className={styles.zoneSelector}
                   style={{
                     top: zone.overviewPosition.top,
                     left: zone.overviewPosition.left,
@@ -344,7 +343,7 @@ export function Room2Apartment({ onComplete, onHintUsed }) {
             {currentZoneObjects.map((obj) => (
               <div
                 key={obj.id}
-                className={`${styles.hotspot} ${styles.objectHotspot} ${debugMode ? styles.hotspotDebug : ''}`}
+                className={`${styles.hotspot} ${styles.objectHotspot}`}
                 style={{
                   top: obj.position.top,
                   left: obj.position.left,
@@ -352,17 +351,14 @@ export function Room2Apartment({ onComplete, onHintUsed }) {
                   height: obj.position.height,
                 }}
                 onClick={() => handleObjectClick(obj)}
-                title={debugMode ? obj.name : ''}
-              >
-                {debugMode && <span className={styles.hotspotLabel}>{obj.name.charAt(0)}</span>}
-              </div>
+              />
             ))}
 
             {/* Fake Nashes */}
             {currentZoneFakes.map((fake) => (
               <div
                 key={fake.id}
-                className={`${styles.hotspot} ${styles.fakeHotspot} ${debugMode ? styles.hotspotDebug : ''}`}
+                className={`${styles.hotspot} ${styles.fakeHotspot}`}
                 style={{
                   top: fake.position.top,
                   left: fake.position.left,
@@ -370,10 +366,7 @@ export function Room2Apartment({ onComplete, onHintUsed }) {
                   height: fake.position.height,
                 }}
                 onClick={() => handleFakeNashClick(fake)}
-                title={debugMode ? 'Fake' : ''}
-              >
-                {debugMode && <span className={styles.hotspotLabel}>F</span>}
-              </div>
+              />
             ))}
 
             {/* Nash photos in this zone */}
@@ -388,7 +381,7 @@ export function Room2Apartment({ onComplete, onHintUsed }) {
                   key={nash.id}
                   className={`${styles.hotspot} ${styles.nashHotspot} ${
                     isFound ? styles.nashFound : ''
-                  } ${debugMode ? styles.hotspotDebug : ''}`}
+                  }`}
                   style={{
                     top: nash.position.top,
                     left: nash.position.left,
@@ -396,20 +389,13 @@ export function Room2Apartment({ onComplete, onHintUsed }) {
                     height: nash.position.height,
                   }}
                   onClick={() => handleNashClick(nash)}
-                  title={debugMode ? `Nash ${nash.id}` : ''}
                 >
-                  {debugMode && <span className={styles.hotspotLabel}>N{nash.id}</span>}
                   {isFound && <span className={styles.foundMarker}>✓</span>}
                 </div>
               );
             })}
           </>
         )}
-
-        {/* Debug toggle */}
-        <button className={styles.debugToggle} onClick={() => setDebugMode((p) => !p)}>
-          {debugMode ? 'Hide' : 'Debug'}
-        </button>
 
         {/* Progress panel */}
         <div className={styles.progressPanel}>

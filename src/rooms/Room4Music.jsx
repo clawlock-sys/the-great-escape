@@ -107,7 +107,6 @@ function generateWavePath(shape, wl, phase, width = 300, height = 80) {
 
 export function Room4Music({ onComplete, onHintUsed }) {
   const [isVisible, setIsVisible] = useState(false);
-  const [debugMode, setDebugMode] = useState(false);
 
   // Progress
   const [records, setRecords] = useState([false, false, false]);
@@ -289,10 +288,6 @@ export function Room4Music({ onComplete, onHintUsed }) {
       <div className={styles.room4}>
         <div className={styles.lightingOverlay} />
 
-        <button className={styles.debugToggle} onClick={() => setDebugMode((p) => !p)}>
-          {debugMode ? 'Hide' : 'Debug'}
-        </button>
-
         {/* Progress */}
         <div className={styles.progressBar}>
           {[0, 1, 2].map((i) => (
@@ -317,7 +312,6 @@ export function Room4Music({ onComplete, onHintUsed }) {
             >
               <div className={styles.stationIcon}>MENU</div>
               <div className={styles.stationLabel}>Drink Menu</div>
-              {debugMode && <span className={styles.debugLbl}>P1</span>}
             </div>
 
             {clueFound && !records[0] && (
@@ -327,7 +321,6 @@ export function Room4Music({ onComplete, onHintUsed }) {
               >
                 <div className={styles.stationIcon}>AMP</div>
                 <div className={styles.stationLabel}>Amplifier</div>
-                {debugMode && <span className={styles.debugLbl}>P1b</span>}
               </div>
             )}
 
@@ -337,7 +330,6 @@ export function Room4Music({ onComplete, onHintUsed }) {
             >
               <div className={styles.stationIcon}>TAPE</div>
               <div className={styles.stationLabel}>Broken Tape</div>
-              {debugMode && <span className={styles.debugLbl}>P2</span>}
             </div>
 
             <div
@@ -346,7 +338,6 @@ export function Room4Music({ onComplete, onHintUsed }) {
             >
               <div className={styles.stationIcon}>CRATE</div>
               <div className={styles.stationLabel}>Vinyl Crate</div>
-              {debugMode && <span className={styles.debugLbl}>P3</span>}
             </div>
 
             {allRecordsFound && (

@@ -78,7 +78,6 @@ export function Room1Market({ onComplete, onHintUsed }) {
   const [isVisible, setIsVisible] = useState(false);
   const [isMicroGlitch, setIsMicroGlitch] = useState(false);
   const [selectedStall, setSelectedStall] = useState(null);
-  const [debugMode, setDebugMode] = useState(false);
   const [visitedStalls, setVisitedStalls] = useState(new Set());
 
   // Audio
@@ -131,10 +130,6 @@ export function Room1Market({ onComplete, onHintUsed }) {
     setSelectedStall(null);
   };
 
-  const toggleDebug = () => {
-    setDebugMode((prev) => !prev);
-  };
-
   const roomClasses = [
     styles.room1,
     isMicroGlitch && styles.microGlitch,
@@ -148,7 +143,7 @@ export function Room1Market({ onComplete, onHintUsed }) {
           {STALLS.map((stall) => (
             <div
               key={stall.id}
-              className={`${styles.hotspot} ${debugMode ? styles.hotspotDebug : ''} ${
+              className={`${styles.hotspot} ${
                 visitedStalls.has(stall.id) ? styles.hotspotVisited : ''
               } ${stall.id === 7 ? styles.hotspotAbandoned : ''}`}
               style={{
@@ -158,19 +153,9 @@ export function Room1Market({ onComplete, onHintUsed }) {
                 height: stall.position.height,
               }}
               onClick={() => handleStallClick(stall)}
-              title={debugMode ? stall.name : ''}
-            >
-              {debugMode && (
-                <span className={styles.hotspotLabel}>{stall.id}</span>
-              )}
-            </div>
+            />
           ))}
         </div>
-
-        {/* Debug toggle */}
-        <button className={styles.debugToggle} onClick={toggleDebug}>
-          {debugMode ? 'Hide Hotspots' : 'Debug'}
-        </button>
 
         {/* Prompt and input at bottom */}
         <div className={styles.bottomPanel}>

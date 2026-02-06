@@ -45,7 +45,6 @@ export function Room3Restaurant({ onComplete, onHintUsed }) {
   const [isVisible, setIsVisible] = useState(false);
   const [candleFlicker, setCandleFlicker] = useState(false);
   const [showBreadstickMsg, setShowBreadstickMsg] = useState(false);
-  const [debugMode, setDebugMode] = useState(false);
 
   // Puzzle inputs
   const [receiptInput, setReceiptInput] = useState('');
@@ -163,47 +162,12 @@ export function Room3Restaurant({ onComplete, onHintUsed }) {
       <div className={styles.room3}>
         <div className={`${styles.candleOverlay} ${candleFlicker ? styles.flicker : ''}`} />
 
-        {/* Debug toggle */}
-        <button className={styles.debugToggle} onClick={() => setDebugMode((p) => !p)}>
-          {debugMode ? 'Hide' : 'Debug'}
-        </button>
-
         {/* Clickable Objects */}
-        <div
-          className={`${styles.hotspot} ${debugMode ? styles.hotspotDebug : ''}`}
-          style={HOTSPOTS.menu}
-          onClick={() => setShowModal('menu')}
-        >
-          {debugMode && <span className={styles.hotspotLabel}>Menu</span>}
-        </div>
-        <div
-          className={`${styles.hotspot} ${debugMode ? styles.hotspotDebug : ''}`}
-          style={HOTSPOTS.wine}
-          onClick={() => setShowModal('wine')}
-        >
-          {debugMode && <span className={styles.hotspotLabel}>Wine</span>}
-        </div>
-        <div
-          className={`${styles.hotspot} ${debugMode ? styles.hotspotDebug : ''}`}
-          style={HOTSPOTS.receipt}
-          onClick={() => setShowModal('receipt')}
-        >
-          {debugMode && <span className={styles.hotspotLabel}>Receipt</span>}
-        </div>
-        <div
-          className={`${styles.hotspot} ${debugMode ? styles.hotspotDebug : ''}`}
-          style={HOTSPOTS.candle}
-          onClick={() => setCandleFlicker(true)}
-        >
-          {debugMode && <span className={styles.hotspotLabel}>Candle</span>}
-        </div>
-        <div
-          className={`${styles.hotspot} ${debugMode ? styles.hotspotDebug : ''}`}
-          style={HOTSPOTS.breadsticks}
-          onClick={() => setShowBreadstickMsg(true)}
-        >
-          {debugMode && <span className={styles.hotspotLabel}>Bread</span>}
-        </div>
+        <div className={styles.hotspot} style={HOTSPOTS.menu} onClick={() => setShowModal('menu')} />
+        <div className={styles.hotspot} style={HOTSPOTS.wine} onClick={() => setShowModal('wine')} />
+        <div className={styles.hotspot} style={HOTSPOTS.receipt} onClick={() => setShowModal('receipt')} />
+        <div className={styles.hotspot} style={HOTSPOTS.candle} onClick={() => setCandleFlicker(true)} />
+        <div className={styles.hotspot} style={HOTSPOTS.breadsticks} onClick={() => setShowBreadstickMsg(true)} />
 
         {showBreadstickMsg && (
           <div className={styles.breadstickMsg} onAnimationEnd={() => setShowBreadstickMsg(false)}>
