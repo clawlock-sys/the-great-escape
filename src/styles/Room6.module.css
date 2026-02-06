@@ -202,19 +202,19 @@
   transition: all 0.1s ease;
 }
 
-/* NO button */
+/* NO button - hidden but findable */
 .noButton {
   padding: 0.5rem 1rem;
   font-family: var(--font-body);
   font-size: 0.9rem;
   background: transparent;
-  color: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 6px;
   cursor: pointer;
-  transition: transform 0.15s ease-out, font-size 0.3s ease;
+  transition: transform 0.15s ease-out, font-size 0.3s ease, color 0.2s ease;
   position: absolute;
-  right: -100px;
+  right: -40px;
 }
 
 .noButton:hover {

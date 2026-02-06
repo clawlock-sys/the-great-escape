@@ -407,8 +407,17 @@
 .menuSection p {
   font-style: italic;
   font-size: 0.95rem;
-  margin: 0;
+  margin: 0.15rem 0;
   padding-left: 0.5rem;
+}
+
+.chefNote {
+  margin-top: 1.25rem !important;
+  padding-top: 0.75rem;
+  border-top: 1px solid #d4c4a8;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: #8b4513;
 }
 
 /* Wine modal */
@@ -428,16 +437,27 @@
   margin-bottom: 0.5rem;
 }
 
-.wineYear {
+.wineEst {
+  font-family: 'Times New Roman', serif;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #8b4513;
+  margin: 0.5rem 0;
+  letter-spacing: 3px;
+}
+
+.wineTagline {
   font-style: italic;
-  font-size: 1.1rem;
-  margin: 0.25rem 0;
+  font-size: 0.95rem;
+  color: #555;
+  margin: 0.5rem 0;
 }
 
 .wineRegion {
-  font-size: 0.9rem;
-  color: #666;
-  margin: 0;
+  font-size: 0.85rem;
+  color: #888;
+  margin: 0.5rem 0 0;
+  letter-spacing: 1px;
 }
 
 /* Receipt modal */
@@ -451,7 +471,21 @@
 
 .receiptModal h2 {
   font-size: 1.2rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.orderNumber {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #8b4513;
+  margin: 0.25rem 0 0.5rem;
+  letter-spacing: 1px;
+}
+
+.receiptTotal {
+  font-weight: bold;
+  font-size: 1rem;
+  margin-top: 0.5rem !important;
 }
 
 .receiptLine {
@@ -549,9 +583,25 @@
   background: #a0522d;
 }
 
+.unlockedAnswer {
+  margin-top: 1rem;
+  text-align: center;
+}
+
 .unlockedText {
   color: #2e7d32;
   font-weight: bold;
-  margin-top: 1rem !important;
+  margin: 0 !important;
   font-size: 1.1rem !important;
+}
+
+.answerReveal {
+  margin-top: 0.5rem !important;
+  font-size: 0.85rem !important;
+  color: #666;
+  font-style: italic;
+  background: rgba(46, 125, 50, 0.1);
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  display: inline-block;
 }

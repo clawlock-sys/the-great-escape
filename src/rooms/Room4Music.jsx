@@ -134,7 +134,7 @@ export function Room4Music({ onComplete, onHintUsed }) {
   const [largestEasterEgg, setLargestEasterEgg] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const ambient = useAudio('/audio/ambient-static.mp3', { loop: true, volume: 0.15 });
+  const ambient = useAudio('/audio/my-way-instrumental.mp3', { loop: true, volume: 0.2 });
   const gracieClip = useAudio('/audio/gracie-abrams-clip.mp3', { loop: false, volume: 0.6 });
   const bigxClip = useAudio('/audio/bigx-clip.mp3', { loop: false, volume: 0.6 });
   const sombrClip = useAudio('/audio/sombr-clip.mp3', { loop: false, volume: 0.6 });

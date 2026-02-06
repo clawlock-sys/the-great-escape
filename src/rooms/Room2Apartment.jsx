@@ -197,7 +197,7 @@ export function Room2Apartment({ onComplete, onHintUsed }) {
   const [showWrongAnswer, setShowWrongAnswer] = useState(false);
 
   // Audio
-  const ambient = useAudio('/audio/ambient-lofi.mp3', { loop: true, volume: 0.3 });
+  const ambient = useAudio('/audio/ambient-lofi.mp3', { loop: true, volume: 0.1 });
 
   useEffect(() => {
     ambient.play();

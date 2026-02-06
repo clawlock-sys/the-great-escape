@@ -74,7 +74,7 @@ export function Room5Lair({ onComplete, onHintUsed }) {
   );
 
   // Audio
-  const ambient = useAudio('/audio/ambient-rumble.mp3', { loop: true, volume: 0.2 });
+  const ambient = useAudio('/audio/ambient-rumble.mp3', { loop: true, volume: 0.1 });
 
   useEffect(() => {
     ambient.play();

@@ -26,9 +26,9 @@ const HOTSPOTS = {
 };
 
 const HINTS = [
-  'Check the receipt, the wine label, and the menu. Each has a secret to reveal.',
-  'Receipt: Add the table number to the price of dessert. Wine: Add the roses and lilies.',
-  'Unscramble: FEBRUARY EIGHTH — your first date.',
+  'The receipt, wine, and menu each hide something in plain sight. Look for numbers and words that mean more than they seem.',
+  'Receipt: The order number is a date. Wine: Roman numerals make a year. Menu: Italian holds the key.',
+  'Unscramble: FEBRUARY EIGHTH — your anniversary.',
 ];
 
 export function Room3Restaurant({ onComplete, onHintUsed }) {
@@ -53,7 +53,7 @@ export function Room3Restaurant({ onComplete, onHintUsed }) {
   const [wineInput, setWineInput] = useState('');
   const [menuInput, setMenuInput] = useState('');
 
-  const ambient = useAudio('/audio/ambient-jazz.mp3', { loop: true, volume: 0.25 });
+  const ambient = useAudio('/audio/ambient-jazz.mp3', { loop: true, volume: 0.1 });
 
   useEffect(() => {
     ambient.play();
@@ -146,7 +146,8 @@ export function Room3Restaurant({ onComplete, onHintUsed }) {
 
   // Puzzle validation logic
   const checkReceiptPuzzle = () => {
-    if (receiptInput === '21') {
+    // Order #0214 = Feb 14 (Valentine's Day)
+    if (receiptInput === '214' || receiptInput === '0214') {
       setUnlockedGroups(prev => ({ ...prev, RECEIPT: true }));
       setShowModal(null);
     } else {
@@ -156,7 +157,8 @@ export function Room3Restaurant({ onComplete, onHintUsed }) {
   };
 
   const checkWinePuzzle = () => {
-    if (wineInput === '10') {
+    // Est. II·VIII = 2008 (Feb 8 as a year)
+    if (wineInput === '2008') {
       setUnlockedGroups(prev => ({ ...prev, WINE: true }));
       setShowModal(null);
     } else {
@@ -166,7 +168,8 @@ export function Room3Restaurant({ onComplete, onHintUsed }) {
   };
 
   const checkMenuPuzzle = () => {
-    if (menuInput === '4') {
+    // OTTO = Italian for 8
+    if (menuInput.toUpperCase() === 'OTTO') {
       setUnlockedGroups(prev => ({ ...prev, MENU: true }));
       setShowModal(null);
     } else {
@@ -292,23 +295,31 @@ export function Room3Restaurant({ onComplete, onHintUsed }) {
               {showModal === 'receipt' && (
                 <div className={styles.receiptModal}>
                   <h2>RISTORANTE ILANDO</h2>
+                  <p className={styles.orderNumber}>Order #0214</p>
                   <div className={styles.receiptLine} />
-                  <p>Table: 7</p>
+                  <p>Table: 7 &nbsp;•&nbsp; 8:02 PM</p>
                   <p>Server: Valentina</p>
+                  <div className={styles.receiptLine} />
                   <p>Bruschetta: $12</p>
                   <p>Risotto: $24</p>
+                  <p>Ravioli a la Vodka: $18</p>
                   <p>Tiramisu: $14</p>
                   <div className={styles.receiptLine} />
+                  <p className={styles.receiptTotal}>Total: $68.00</p>
                   {unlockedGroups.RECEIPT ? (
-                    <p className={styles.unlockedText}>✔ Clue Found!</p>
+                    <div className={styles.unlockedAnswer}>
+                      <p className={styles.unlockedText}>✔ Clue Found!</p>
+                      <p className={styles.answerReveal}>Order #0214 → 02/14</p>
+                    </div>
                   ) : (
                     <div className={styles.puzzleInput}>
-                      <p>Enter Sum of Table # and Price of Dessert:</p>
-                      <input 
-                        type="number" 
-                        value={receiptInput} 
+                      <p>Enter the order number:</p>
+                      <input
+                        type="text"
+                        value={receiptInput}
                         onChange={(e) => setReceiptInput(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && checkReceiptPuzzle()}
+                        placeholder="####"
                         autoFocus
                       />
                       <button onClick={checkReceiptPuzzle}>Unlock</button>
@@ -321,20 +332,24 @@ export function Room3Restaurant({ onComplete, onHintUsed }) {
                 <div className={styles.wineModal}>
                   <div className={styles.wineLabel}>
                     <h2>CASA DEL CUORE</h2>
-                    <p className={styles.wineYear}>Reserve 2024</p>
-                    <p>"Two roses. Eight lilies."</p>
+                    <p className={styles.wineEst}>Est. II·VIII</p>
+                    <p className={styles.wineTagline}>"A vintage for anniversaries"</p>
                     <p className={styles.wineRegion}>San Diego Valley</p>
                   </div>
                   {unlockedGroups.WINE ? (
-                    <p className={styles.unlockedText}>✔ Clue Found!</p>
+                    <div className={styles.unlockedAnswer}>
+                      <p className={styles.unlockedText}>✔ Clue Found!</p>
+                      <p className={styles.answerReveal}>II·VIII → 2008</p>
+                    </div>
                   ) : (
                     <div className={styles.puzzleInput}>
-                      <p>Enter the total number of flowers:</p>
-                      <input 
-                        type="number" 
-                        value={wineInput} 
+                      <p>What year was this winery established?</p>
+                      <input
+                        type="text"
+                        value={wineInput}
                         onChange={(e) => setWineInput(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && checkWinePuzzle()}
+                        placeholder="YYYY"
                         autoFocus
                       />
                       <button onClick={checkWinePuzzle}>Unlock</button>
@@ -353,6 +368,7 @@ export function Room3Restaurant({ onComplete, onHintUsed }) {
                   <div className={styles.menuSection}>
                     <h3>PRIMI</h3>
                     <p>• Risotto ai Funghi</p>
+                    <p>• Ravioli a la Vodka</p>
                   </div>
                   <div className={styles.menuSection}>
                     <h3>SECONDI</h3>
@@ -362,16 +378,21 @@ export function Room3Restaurant({ onComplete, onHintUsed }) {
                     <h3>DOLCI</h3>
                     <p>• Tiramisu Classico</p>
                   </div>
+                  <p className={styles.chefNote}>★ Chef's Table — seating for OTTO guests</p>
                   {unlockedGroups.MENU ? (
-                    <p className={styles.unlockedText}>✔ Clue Found!</p>
+                    <div className={styles.unlockedAnswer}>
+                      <p className={styles.unlockedText}>✔ Clue Found!</p>
+                      <p className={styles.answerReveal}>OTTO → 8 in Italian</p>
+                    </div>
                   ) : (
                     <div className={styles.puzzleInput}>
-                      <p>How many menu sections are listed?</p>
-                      <input 
-                        type="number" 
-                        value={menuInput} 
+                      <p>What is the chef's lucky word?</p>
+                      <input
+                        type="text"
+                        value={menuInput}
                         onChange={(e) => setMenuInput(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && checkMenuPuzzle()}
+                        placeholder="Italian word"
                         autoFocus
                       />
                       <button onClick={checkMenuPuzzle}>Unlock</button>

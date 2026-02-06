@@ -82,7 +82,7 @@ export function Room1Market({ onComplete, onHintUsed }) {
   const [visitedStalls, setVisitedStalls] = useState(new Set());
 
   // Audio
-  const ambient = useAudio('/audio/ambient-market.mp3', { loop: true, volume: 0.3 });
+  const ambient = useAudio('/audio/ambient-market.mp3', { loop: true, volume: 0.1 });
 
   useEffect(() => {
     ambient.play();

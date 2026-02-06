@@ -32,8 +32,15 @@ export function Room0Entry({ onComplete, onHintUsed }) {
   const { displayText, isComplete: textComplete } = useTypewriter(NARRATIVE_TEXT, 60);
 
   // Audio hooks (gracefully handle missing files)
-  const ambient = useAudio('/audio/ambient-drone.mp3', { loop: true, volume: 0.3 });
-  const typewriterSound = useAudio('/audio/typewriter-click.mp3', { volume: 0.2 });
+  const ambient = useAudio('/audio/ambient-drone.mp3', { loop: true, volume: 0.1 });
+  const typewriterSound = useAudio('/audio/typewriter-click.mp3', { volume: 0.1 });
+
+  // Play typewriter sound as text updates
+  useEffect(() => {
+    if (displayText && !textComplete) {
+      typewriterSound.play();
+    }
+  }, [displayText, textComplete]);
 
   // Start ambient on mount
   useEffect(() => {
