@@ -13,13 +13,22 @@ export function useAudio(src, options = {}) {
       src: [fullPath],
       loop: options.loop || false,
       volume: options.volume || 0.5,
+      preload: true,
+      html5: true,
     });
     return () => soundRef.current?.unload();
   }, [src]);
 
   return {
-    play: () => soundRef.current?.play(),
+    play: (startTime) => {
+      const id = soundRef.current?.play();
+      if (startTime && id !== undefined) {
+        soundRef.current?.seek(startTime, id);
+      }
+      return id;
+    },
     stop: () => soundRef.current?.stop(),
+    seek: (time) => soundRef.current?.seek(time),
     fade: (from, to, duration) => soundRef.current?.fade(from, to, duration),
   };
 }

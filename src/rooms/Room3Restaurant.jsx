@@ -18,17 +18,17 @@ const GROUPS = {
 
 // Hotspot positions
 const HOTSPOTS = {
-  menu: { top: '35%', left: '25%', width: '12%', height: '15%' },
-  wine: { top: '30%', left: '55%', width: '8%', height: '20%' },
-  receipt: { top: '50%', left: '40%', width: '10%', height: '8%' },
+  menu: { top: '58%', left: '22%', width: '12%', height: '15%' },
+  wine: { top: '58%', left: '78%', width: '8%', height: '20%' },
+  receipt: { top: '86%', left: '35%', width: '10%', height: '8%' },
   candle: { top: '25%', left: '45%', width: '6%', height: '12%' },
-  breadsticks: { top: '45%', left: '60%', width: '10%', height: '10%' },
+  breadsticks: { top: '64%', left: '65%', width: '10%', height: '10%' },
 };
 
 const HINTS = [
-  'The receipt, wine, and menu each hide something in plain sight. Look for numbers and words that mean more than they seem.',
+  'Shez and Riya walk in for the first time.',
   'Receipt: The order number is a date. Wine: Roman numerals make a year. Menu: Italian holds the key.',
-  'Unscramble: FEBRUARY EIGHTH — your anniversary.',
+  'Unscramble: FEBRUARY EIGHTH — your first visit.',
 ];
 
 export function Room3Restaurant({ onComplete, onHintUsed }) {
@@ -39,7 +39,6 @@ export function Room3Restaurant({ onComplete, onHintUsed }) {
   });
   
   const [tiles, setTiles] = useState([]);
-  const [selectedTileId, setSelectedTileId] = useState(null);
   const [showModal, setShowModal] = useState(null);
   const [showWrongAnswer, setShowWrongAnswer] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
@@ -81,50 +80,29 @@ export function Room3Restaurant({ onComplete, onHintUsed }) {
   }, [unlockedGroups]);
 
   const handleTileClick = useCallback((tileId) => {
-    if (selectedTileId === null) {
-      setSelectedTileId(tileId);
-    } else if (selectedTileId === tileId) {
-      setSelectedTileId(null);
-    } else {
-      setTiles((prev) => {
-        const newTiles = [...prev];
-        const tile1 = newTiles.find((t) => t.id === selectedTileId);
-        const tile2 = newTiles.find((t) => t.id === tileId);
-        if (tile1 && tile2) {
-          const tempSlot = tile1.inSlot;
-          tile1.inSlot = tile2.inSlot;
-          tile2.inSlot = tempSlot;
+    setTiles((prev) => {
+      const tile = prev.find((t) => t.id === tileId);
+      if (!tile || tile.inSlot !== null) return prev;
+      // Find the next empty slot
+      const occupiedSlots = new Set(prev.filter((t) => t.inSlot !== null).map((t) => t.inSlot));
+      let nextSlot = null;
+      for (let i = 0; i < 14; i++) {
+        if (!occupiedSlots.has(i)) {
+          nextSlot = i;
+          break;
         }
-        return newTiles;
-      });
-      setSelectedTileId(null);
-    }
-  }, [selectedTileId]);
+      }
+      if (nextSlot === null) return prev;
+      return prev.map((t) => t.id === tileId ? { ...t, inSlot: nextSlot } : t);
+    });
+  }, []);
 
   const handleSlotClick = useCallback((slotIndex) => {
-    if (selectedTileId === null) return;
-    const occupyingTile = tiles.find((t) => t.inSlot === slotIndex);
-    if (occupyingTile) {
-      setTiles((prev) => {
-        const newTiles = [...prev];
-        const selectedTile = newTiles.find((t) => t.id === selectedTileId);
-        const slotTile = newTiles.find((t) => t.inSlot === slotIndex);
-        if (selectedTile && slotTile) {
-          const tempSlot = selectedTile.inSlot;
-          selectedTile.inSlot = slotIndex;
-          slotTile.inSlot = tempSlot;
-        }
-        return newTiles;
-      });
-    } else {
-      setTiles((prev) =>
-        prev.map((t) =>
-          t.id === selectedTileId ? { ...t, inSlot: slotIndex } : t
-        )
-      );
-    }
-    setSelectedTileId(null);
-  }, [selectedTileId, tiles]);
+    // Remove tile from slot back to the pool
+    setTiles((prev) =>
+      prev.map((t) => t.inSlot === slotIndex ? { ...t, inSlot: null } : t)
+    );
+  }, []);
 
   const handleSubmit = useCallback(() => {
     const slotTiles = tiles
@@ -233,29 +211,32 @@ export function Room3Restaurant({ onComplete, onHintUsed }) {
           </div>
         )}
 
+        {/* Floating clue progress at top */}
+        {!allUnlocked && (
+          <div className={styles.lockedMessage}>
+            <p className={styles.prompt}>"The perfect evening is hidden in the details."</p>
+            <div className={styles.progress}>
+              {unlockedGroups.RECEIPT && <span className={styles.unlocked}>Receipt 📝</span>}
+              {unlockedGroups.WINE && <span className={styles.unlocked}>Wine 🍷</span>}
+              {unlockedGroups.MENU && <span className={styles.unlocked}>Menu 🍴</span>}
+            </div>
+          </div>
+        )}
+
         {/* Table Area for Tiles */}
-        <div className={styles.tileArea}>
-          {allUnlocked ? (
-            tiles.filter(t => t.inSlot === null).map((tile) => (
+        {allUnlocked && (
+          <div className={styles.tileArea}>
+            {tiles.filter(t => t.inSlot === null).map((tile) => (
               <div
                 key={tile.id}
-                className={`${styles.tile} ${selectedTileId === tile.id ? styles.tileSelected : ''} ${isShaking ? styles.tileShake : ''}`}
+                className={`${styles.tile} ${isShaking ? styles.tileShake : ''}`}
                 onClick={() => handleTileClick(tile.id)}
               >
                 {tile.letter}
               </div>
-            ))
-          ) : (
-            <div className={styles.lockedMessage}>
-              <p>The table is empty. Find the clues in the room.</p>
-              <div className={styles.progress}>
-                <span className={unlockedGroups.RECEIPT ? styles.unlocked : ''}>Receipt 📝</span>
-                <span className={unlockedGroups.WINE ? styles.unlocked : ''}>Wine 🍷</span>
-                <span className={unlockedGroups.MENU ? styles.unlocked : ''}>Menu 🍴</span>
-              </div>
-            </div>
-          )}
-        </div>
+            ))}
+          </div>
+        )}
 
         {/* Answer Slots */}
         {allUnlocked && (
@@ -267,7 +248,7 @@ export function Room3Restaurant({ onComplete, onHintUsed }) {
                   <div
                     key={i}
                     className={`${styles.answerSlot} ${tile ? styles.answerSlotFilled : ''}`}
-                    onClick={() => (tile ? handleTileClick(tile.id) : handleSlotClick(i))}
+                    onClick={() => tile && handleSlotClick(i)}
                   >
                     {tile && <span className={styles.slotLetter}>{tile.letter}</span>}
                   </div>
@@ -278,12 +259,9 @@ export function Room3Restaurant({ onComplete, onHintUsed }) {
           </div>
         )}
 
-        <div className={styles.bottomPanel}>
-          <p className={styles.prompt}>"The perfect evening is hidden in the details."</p>
-          <div className={styles.controls}>
-            <HintButton hints={HINTS} onHintUsed={onHintUsed} roomId={3} />
-            {showWrongAnswer && <p className={styles.wrongAnswer}>That's not right...</p>}
-          </div>
+        <div className={styles.controls}>
+          <HintButton hints={HINTS} onHintUsed={onHintUsed} roomId={3} />
+          {showWrongAnswer && <p className={styles.wrongAnswer}>That's not right...</p>}
         </div>
 
         {/* Modals for Puzzles */}
@@ -294,7 +272,7 @@ export function Room3Restaurant({ onComplete, onHintUsed }) {
 
               {showModal === 'receipt' && (
                 <div className={styles.receiptModal}>
-                  <h2>RISTORANTE ILANDO</h2>
+                  <h2>RISTORANTE ILLANDO</h2>
                   <p className={styles.orderNumber}>Order #0214</p>
                   <div className={styles.receiptLine} />
                   <p>Table: 7 &nbsp;•&nbsp; 8:02 PM</p>

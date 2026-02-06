@@ -9,20 +9,20 @@ const ZONES = {
   living: {
     id: 'living',
     name: 'Living Room',
-    background: '/assets/room2/zone-living.png',
+    background: '/assets/room2/zones/Living-Room.PNG',
     // Clickable area on overview
     overviewPosition: { top: '20%', left: '5%', width: '35%', height: '75%' },
   },
   kitchen: {
     id: 'kitchen',
     name: 'Kitchen',
-    background: '/assets/room2/zone-kitchen.png',
+    background: '/assets/room2/zones/Kitchen.jpg',
     overviewPosition: { top: '20%', left: '35%', width: '30%', height: '75%' },
   },
   bedroom: {
     id: 'bedroom',
     name: 'Bedroom',
-    background: '/assets/room2/zone-bedroom.png',
+    background: '/assets/room2/zones/Bedroom.PNG',
     overviewPosition: { top: '20%', left: '60%', width: '38%', height: '75%' },
   },
 };
@@ -38,7 +38,7 @@ const NASH_PHOTOS = [
     hint: 'Behind the couch cushion',
     image: '/assets/room2/nash1.jpeg',
     // Position within zoomed living room view
-    position: { top: '55%', left: '60%', width: '8%', height: '10%' },
+    position: { top: '82%', left: '80%', width: '8%', height: '10%' },
   },
   {
     id: 2,
@@ -51,12 +51,12 @@ const NASH_PHOTOS = [
   },
   {
     id: 3,
-    location: 'bedroom wall',
+    location: 'bottom of bed',
     zone: 'bedroom',
     letter: 'L',
-    hint: 'Hanging on the bedroom wall',
+    hint: 'At the foot of the bed',
     image: '/assets/room2/nash3.png',
-    position: { top: '25%', left: '15%', width: '8%', height: '10%' },
+    position: { top: '70%', left: '55%', width: '8%', height: '10%' },
   },
   {
     id: 4,
@@ -65,7 +65,7 @@ const NASH_PHOTOS = [
     letter: 'A',
     hint: 'Inside a book on the shelf',
     image: '/assets/room2/nash4.jpeg',
-    position: { top: '35%', left: '25%', width: '6%', height: '8%' },
+    position: { top: '65%', left: '10%', width: '9%', height: '12%' },
   },
   {
     id: 5,
@@ -78,12 +78,12 @@ const NASH_PHOTOS = [
   },
   {
     id: 6,
-    location: 'dresser drawer',
+    location: 'pictures on wall',
     zone: 'bedroom',
     letter: 'D',
-    hint: 'In the dresser drawer',
+    hint: 'Among the pictures on the wall',
     image: '/assets/room2/nash6.jpeg',
-    position: { top: '60%', left: '70%', width: '7%', height: '10%' },
+    position: { top: '25%', left: '22%', width: '7%', height: '10%' },
   },
   {
     id: 7,
@@ -92,7 +92,7 @@ const NASH_PHOTOS = [
     letter: 'O',
     hint: 'In the kitchen cabinets',
     image: '/assets/room2/nash7.jpeg',
-    position: { top: '20%', left: '65%', width: '8%', height: '10%' },
+    position: { top: '55%', left: '65%', width: '12%', height: '14%' },
   },
   {
     id: 8,
@@ -109,39 +109,36 @@ const NASH_PHOTOS = [
 // Interactive objects per zone (red herrings with flavor text)
 const INTERACTIVE_OBJECTS = {
   living: [
-    { id: 'tv', name: 'TV', position: { top: '30%', left: '45%', width: '15%', height: '20%' }, text: 'The TV is off. Your reflection stares back, distorted.' },
-    { id: 'plant', name: 'Plant', position: { top: '20%', left: '80%', width: '10%', height: '25%' }, text: 'A healthy monstera. No secrets hidden in its leaves.' },
-    { id: 'rug', name: 'Rug', position: { top: '70%', left: '40%', width: '25%', height: '15%' }, text: 'You lift the rug. Just dust bunnies.' },
-    { id: 'lamp', name: 'Lamp', position: { top: '25%', left: '10%', width: '8%', height: '20%' }, text: 'The lamp flickers. For a moment, you see a shadow...' },
-    { id: 'window-living', name: 'Window', position: { top: '15%', left: '55%', width: '20%', height: '30%' }, text: 'San Diego sunshine streams in. Nothing unusual outside.' },
+    { id: 'plant', name: 'Plant', position: { top: '55%', left: '38%', width: '10%', height: '20%' }, text: 'There are flowers here... they\'re dying...' },
+    { id: 'rug', name: 'Rug', position: { top: '70%', left: '48%', width: '25%', height: '15%' }, text: 'You lift the rug. Just dust bunnies.' },
+    { id: 'lamp', name: 'Lamp', position: { top: '35%', left: '28%', width: '8%', height: '20%' }, text: 'The lamp flickers. For a moment, you see a shadow...' },
+    { id: 'window-living', name: 'Window', position: { top: '15%', left: '35%', width: '35%', height: '40%' }, text: 'San Diego sunshine streams in. Nothing unusual outside.' },
   ],
   kitchen: [
-    { id: 'sink', name: 'Sink', position: { top: '40%', left: '40%', width: '12%', height: '15%' }, text: 'Dishes from last night. A coffee mug reads "World\'s Best..."' },
-    { id: 'stove', name: 'Stove', position: { top: '35%', left: '75%', width: '15%', height: '20%' }, text: 'The stovetop is cold. Someone was cooking pasta recently.' },
-    { id: 'fruit-bowl', name: 'Fruit Bowl', position: { top: '65%', left: '30%', width: '10%', height: '10%' }, text: 'Bananas going brown. Nothing hidden underneath.' },
+    { id: 'sink', name: 'Sink', position: { top: '40%', left: '40%', width: '12%', height: '15%' }, text: 'There\'s a note. "To my pretty girl -S"' },
+    { id: 'stove', name: 'Stove', position: { top: '35%', left: '75%', width: '15%', height: '20%' }, text: 'The machine is still warm. Someone needs to wake up.' },
+    { id: 'fruit-bowl', name: 'Fruit Bowl', position: { top: '65%', left: '30%', width: '10%', height: '10%' }, text: 'Polaroids scattered from the night before.' },
     { id: 'calendar', name: 'Calendar', position: { top: '20%', left: '10%', width: '8%', height: '12%' }, text: 'February 2025. A date is circled in red: the 14th.' },
-    { id: 'toaster', name: 'Toaster', position: { top: '45%', left: '55%', width: '8%', height: '8%' }, text: 'A normal toaster. Why did you check this?' },
+    { id: 'toaster', name: 'Toaster', position: { top: '45%', left: '55%', width: '8%', height: '8%' }, text: 'The lemonades make your mouth water.' },
   ],
   bedroom: [
     { id: 'pillow', name: 'Pillow', position: { top: '55%', left: '25%', width: '15%', height: '12%' }, text: 'You fluff the pillow. Something red catches your eye... just a thread.' },
-    { id: 'closet', name: 'Closet', position: { top: '30%', left: '85%', width: '12%', height: '40%' }, text: 'Clothes hanging neatly. A familiar hoodie you\'ve borrowed.' },
+    { id: 'closet', name: 'Closet', position: { top: '30%', left: '85%', width: '12%', height: '40%' }, text: 'Happy Gilmore plays on the TV. "The price is wrong, Bobby!"' },
     { id: 'nightstand', name: 'Nightstand', position: { top: '50%', left: '10%', width: '10%', height: '15%' }, text: 'A book, a glass of water, and a charging phone. Nothing unusual.' },
     { id: 'biggie-bed', name: 'Something Red', position: { top: '48%', left: '40%', width: '10%', height: '12%' }, text: '"Not yet." The red bunny seems to whisper.', isBiggie: true },
-    { id: 'window-bedroom', name: 'Window', position: { top: '15%', left: '55%', width: '18%', height: '25%' }, text: 'The window lock catches your attention...' , triggersWindowPuzzle: true },
+    { id: 'window-bedroom', name: 'Window', position: { top: '25%', left: '68%', width: '18%', height: '25%' }, text: 'The window lock catches your attention...' , triggersWindowPuzzle: true },
   ],
 };
 
-// Fake Nashes per zone
+// Fake Nashes per zone (decoys that trigger "NASHED!" message)
 const FAKE_NASHES = {
   living: [
-    { id: 'fake-living-1', position: { top: '65%', left: '15%', width: '8%', height: '10%' }, image: '/assets/room2/decoy1.jpeg' },
+    { id: 'fake-living-1', position: { top: '25%', left: '70%', width: '28%', height: '50%' }, image: '/assets/room2/nacholibre.jpeg' },
   ],
   kitchen: [
-    { id: 'fake-kitchen-1', position: { top: '55%', left: '15%', width: '7%', height: '9%' }, image: '/assets/room2/decoy2.png' },
+    { id: 'fake-kitchen-1', position: { top: '55%', left: '15%', width: '7%', height: '9%' }, image: '/assets/room2/meera.png' },
   ],
-  bedroom: [
-    { id: 'fake-bedroom-1', position: { top: '70%', left: '55%', width: '8%', height: '10%' }, image: '/assets/room2/decoy1.jpeg' },
-  ],
+  bedroom: [],
 };
 
 // Window lock puzzle
@@ -168,8 +165,9 @@ const generateInitialDialValues = () => {
 };
 
 const HINTS = [
-  "He's everywhere. Eight times, to be exact. But one is lying.",
-  'Each face holds a letter. The letters hold a place.',
+  "I'm everywhere but nowhere. Come find me.",
+  "I think I can see Mike from here.",
+  'Open the window, dummy.',
   'I-L-L-A-N-D-O. The place where the night was perfect.',
 ];
 
@@ -320,7 +318,7 @@ export function Room2Apartment({ onComplete, onHintUsed }) {
                   <div className={styles.zoneSelectorLabel}>
                     <span className={styles.zoneName}>{zone.name}</span>
                     <span className={styles.zoneProgress}>
-                      {foundInZone}/{nashesInZone.length} found
+                      {foundInZone}/{nashesInZone.length} solved
                     </span>
                   </div>
                 </div>
@@ -415,9 +413,6 @@ export function Room2Apartment({ onComplete, onHintUsed }) {
 
         {/* Progress panel */}
         <div className={styles.progressPanel}>
-          <div className={styles.nashCount}>
-            Nash Photos: {foundNashes.size}/{NASH_PHOTOS.length}
-          </div>
           <div className={styles.letterDisplay}>
             {targetWord.map((slot, idx) => {
               const isFound = foundNashes.has(slot.nashId);
@@ -440,11 +435,6 @@ export function Room2Apartment({ onComplete, onHintUsed }) {
 
         {/* Bottom panel */}
         <div className={styles.bottomPanel}>
-          <p className={styles.prompt}>
-            {activeZone
-              ? `Searching ${ZONES[activeZone].name}...`
-              : '"I\'m everywhere but nowhere. Come find me."'}
-          </p>
           {!activeZone && (
             <HintButton hints={HINTS} onHintUsed={handleHintUsed} roomId={2} />
           )}

@@ -54,11 +54,11 @@ const VINYL_RIDDLE = [
 // ═══════════════════════════════════════════
 
 const FINAL_RECORDS = [
-  { id: 'largest', title: 'The Largest', artist: 'BigXDaPlug', color: '#dc2626', audio: `${import.meta.env.BASE_URL}audio/bigx-clip.mp3` },
-  { id: 'gracie', title: "I Love You, I'm Sorry", artist: 'Gracie Abrams', color: '#86efac', audio: `${import.meta.env.BASE_URL}audio/gracie-abrams-clip.mp3` },
-  { id: 'sombr', title: 'back to friends', artist: 'sombr', color: '#f59e0b', audio: `${import.meta.env.BASE_URL}audio/sombr-clip.mp3` },
-  { id: 'vienna', title: 'Vienna', artist: 'Billy Joel', color: '#60a5fa', audio: `${import.meta.env.BASE_URL}audio/billy-joel-clip.mp3` },
-  { id: 'laufey', title: 'Valentine', artist: 'Laufey', color: '#f472b6', audio: `${import.meta.env.BASE_URL}audio/laufey-clip.mp3` },
+  { id: 'largest', title: 'The Largest', artist: 'BigXDaPlug', color: '#dc2626', audio: `${import.meta.env.BASE_URL}audio/bigx-full.mp3` },
+  { id: 'gracie', title: "I Love You, I'm Sorry", artist: 'Gracie Abrams', color: '#86efac', audio: `${import.meta.env.BASE_URL}audio/gracie-abrams-full.mp3` },
+  { id: 'sombr', title: 'back to friends', artist: 'sombr', color: '#f59e0b', audio: `${import.meta.env.BASE_URL}audio/sombr-full.mp3` },
+  { id: 'vienna', title: 'Vienna', artist: 'Billy Joel', color: '#60a5fa', audio: `${import.meta.env.BASE_URL}audio/billy-joel-full.mp3` },
+  { id: 'laufey', title: 'Valentine', artist: 'Laufey', color: '#f472b6', audio: `${import.meta.env.BASE_URL}audio/laufey-full.mp3` },
 ];
 
 const HINTS = [
@@ -135,11 +135,11 @@ export function Room4Music({ onComplete, onHintUsed }) {
   const [success, setSuccess] = useState(false);
 
   const ambient = useAudio('/audio/my-way-instrumental.mp3', { loop: true, volume: 0.2 });
-  const gracieClip = useAudio('/audio/gracie-abrams-clip.mp3', { loop: false, volume: 0.6 });
-  const bigxClip = useAudio('/audio/bigx-clip.mp3', { loop: false, volume: 0.6 });
-  const sombrClip = useAudio('/audio/sombr-clip.mp3', { loop: false, volume: 0.6 });
-  const billyClip = useAudio('/audio/billy-joel-clip.mp3', { loop: false, volume: 0.6 });
-  const laufeyClip = useAudio('/audio/laufey-clip.mp3', { loop: false, volume: 0.6 });
+  const gracieClip = useAudio('/audio/gracie-abrams-full.mp3', { loop: false, volume: 0.6 });
+  const bigxClip = useAudio('/audio/bigx-full.mp3', { loop: false, volume: 0.6 });
+  const sombrClip = useAudio('/audio/sombr-full.mp3', { loop: false, volume: 0.6 });
+  const billyClip = useAudio('/audio/billy-joel-full.mp3', { loop: false, volume: 0.6 });
+  const laufeyClip = useAudio('/audio/laufey-full.mp3', { loop: false, volume: 0.6 });
 
   const audioMap = useRef({ gracie: gracieClip, largest: bigxClip, sombr: sombrClip, vienna: billyClip, laufey: laufeyClip });
   audioMap.current = { gracie: gracieClip, largest: bigxClip, sombr: sombrClip, vienna: billyClip, laufey: laufeyClip };
@@ -229,28 +229,37 @@ export function Room4Music({ onComplete, onHintUsed }) {
   }, []);
 
   // ── Record Player ──
+  // Start times for each record (in seconds)
+  const recordStartTimes = {
+    largest: 13,
+    sombr: 85,
+    vienna: 12,
+    laufey: 2,
+    gracie: 130, // 2:10
+  };
+
   const handleRecordSelect = useCallback(
     (record) => {
       stopAllClips();
+      ambient.stop();
       const clip = audioMap.current[record.id];
+      const startTime = recordStartTimes[record.id] || 0;
 
       if (record.id === 'largest') {
         setLargestEasterEgg(true);
-        clip?.play();
+        clip?.play(startTime);
         setTimeout(() => setLargestEasterEgg(false), 5000);
       } else if (record.id === 'gracie') {
         setSuccess(true);
         setActivePuzzle(null);
-        clip?.play();
-        ambient.stop();
-        setTimeout(() => onComplete?.(), 4000);
+        clip?.play(startTime);
+        // Fade out audio over the last 2 seconds
+        setTimeout(() => clip?.fade(0.6, 0, 2000), 7000);
+        setTimeout(() => onComplete?.(), 9000);
       } else {
-        clip?.play();
+        clip?.play(startTime);
         setWrongRecord(true);
-        setTimeout(() => {
-          setWrongRecord(false);
-          clip?.stop();
-        }, 3000);
+        setTimeout(() => setWrongRecord(false), 3000);
       }
     },
     [onComplete, ambient, stopAllClips]
@@ -617,16 +626,19 @@ export function Room4Music({ onComplete, onHintUsed }) {
 
         {/* ═══ SUCCESS ═══ */}
         {success && (
-          <div className={styles.successOverlay}>
-            <div className={styles.successContent}>
-              <div className={styles.spinningVinyl}>
-                <div className={styles.vinylHole} />
+          <>
+            <div className={styles.successOverlay}>
+              <div className={styles.successContent}>
+                <div className={styles.spinningVinyl}>
+                  <div className={styles.vinylHole} />
+                </div>
+                <p className={styles.successText}>Yes... that&apos;s the one.</p>
+                <p className={styles.successSong}>&quot;I Love You, I&apos;m Sorry&quot;</p>
+                <p className={styles.successArtist}>Gracie Abrams</p>
               </div>
-              <p className={styles.successText}>Yes... that&apos;s the one.</p>
-              <p className={styles.successSong}>&quot;I Love You, I&apos;m Sorry&quot;</p>
-              <p className={styles.successArtist}>Gracie Abrams</p>
             </div>
-          </div>
+            <div className={styles.fadeToBlack} />
+          </>
         )}
 
         {/* Bottom panel */}
@@ -643,11 +655,11 @@ export function Room4Music({ onComplete, onHintUsed }) {
           </div>
         </div>
 
-        {/* Easter egg */}
+        {/* Easter egg - Biggie flash like Room 0 */}
         {largestEasterEgg && (
           <div className={styles.largestEasterEgg}>
             <div className={styles.redFlashOverlay} />
-            <div className={styles.largestText}>BIG X DA PLUG!</div>
+            <div className={styles.biggieFrame} />
           </div>
         )}
       </div>

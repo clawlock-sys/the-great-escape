@@ -40,7 +40,7 @@ export function Room6Finale({ onComplete }) {
   );
 
   // Audio
-  const ambient = useAudio('/audio/gracie-abrams-clip.mp3', { loop: true, volume: 0.3 });
+  const ambient = useAudio('/audio/gracie-abrams-full.mp3', { loop: true, volume: 0.3 });
 
   useEffect(() => {
     ambient.play();
@@ -113,8 +113,7 @@ export function Room6Finale({ onComplete }) {
   // Handle YES click
   const handleYesClick = () => {
     setShowConfetti(true);
-    ambient.stop();
-    // Play full volume version if available
+    // Keep playing the song
     setTimeout(() => {
       setShowFinalMessage(true);
     }, 1000);
@@ -205,8 +204,8 @@ export function Room6Finale({ onComplete }) {
           <div className={styles.finalContainer}>
             <p className={styles.knewIt}>I knew you'd say yes. 💕</p>
             <div className={styles.finalMessage}>
-              <p>Happy Valentine's Day, pretty girl.</p>
-              <p className={styles.signature}>- Your little gremlin's keeper</p>
+              <p>I love you, pretty girl.</p>
+              <p className={styles.signature}>... even when you're being a little gremlin</p>
             </div>
           </div>
         )}

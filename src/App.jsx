@@ -24,7 +24,7 @@ const ROOM_TRANSITIONS = {
   },
   '2-3': {
     type: 'text',
-    text: 'Ristorante Ilando... where it all began.',
+    text: 'Ristorante Illando... where it all began.',
   },
   '3-4': {
     type: 'text',
