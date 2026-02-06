@@ -31,6 +31,16 @@ const HINTS = [
   'Unscramble: FEBRUARY EIGHTH — your first visit.',
 ];
 
+// Fisher-Yates shuffle
+const shuffleArray = (array) => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
 export function Room3Restaurant({ onComplete, onHintUsed }) {
   const [unlockedGroups, setUnlockedGroups] = useState({
     RECEIPT: false,
@@ -59,19 +69,22 @@ export function Room3Restaurant({ onComplete, onHintUsed }) {
     return () => ambient.stop();
   }, []);
 
-  // When a group is unlocked, add its letters to the table
+  // When a group is unlocked, add its letters to the table (shuffled)
   useEffect(() => {
     let newLetters = [];
     if (unlockedGroups.RECEIPT) newLetters = [...newLetters, ...GROUPS.RECEIPT];
     if (unlockedGroups.WINE) newLetters = [...newLetters, ...GROUPS.WINE];
     if (unlockedGroups.MENU) newLetters = [...newLetters, ...GROUPS.MENU];
-    
+
     // Add decoys if everything is unlocked
     if (unlockedGroups.RECEIPT && unlockedGroups.WINE && unlockedGroups.MENU) {
       newLetters = [...newLetters, ...DECOY_LETTERS];
     }
 
-    setTiles(newLetters.map((letter, index) => ({
+    // Shuffle the letters so they're not in order
+    const shuffledLetters = shuffleArray(newLetters);
+
+    setTiles(shuffledLetters.map((letter, index) => ({
       id: `tile-${letter}-${index}`,
       letter,
       inSlot: null,
